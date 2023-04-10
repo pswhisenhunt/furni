@@ -1,9 +1,13 @@
 const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:', request.path)
-  console.log('Body:', request.body)
-  console.log('---')
-  next()
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('Method:', request.method)
+    console.log('Path:', request.path)
+    console.log('Body:', request.body)
+    console.log('---')
+    next()
+  } else {
+    next()
+  }
 }
 
 const unknownEndpoint = (request, response) => {
@@ -11,10 +15,14 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-  if (error.name === 'CastError ') return response.status(400).send({ error: 'malformatted id'})
-  if (error.name === 'ValidationError') return response.status(400).json({ error: error.message })
-  next(error)
+  if (process.env.NODE_ENV !== 'test') {
+    console.error(error.message)
+    if (error.name === 'CastError ') return response.status(400).send({ error: 'malformatted id'})
+    if (error.name === 'ValidationError') return response.status(400).json({ error: error.message })
+    next(error)
+  } else {
+    next(error)
+  }
 }
 
 module.exports = {

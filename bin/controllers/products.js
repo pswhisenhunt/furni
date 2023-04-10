@@ -1,13 +1,16 @@
 const productsRouter = require('express').Router()
 const Product = require('../models/product')
 
-productsRouter.get('/', (request, response) => {
-  Product.find({}).then(products => {
+productsRouter.get('/', async (request, response, next) => {
+  try {
+    const products = await Product.find({})
     response.json(products)
-  })
+  } catch(exception) {
+    next(exception)
+  }
 })
 
-productsRouter.get('/:id', (request, response, next) => {
+productsRouter.get('/:id', async (request, response, next) => {
   Product.findById(request.params.id)
     .then(product => {
       if (product) {
@@ -19,7 +22,7 @@ productsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-productsRouter.post('/', (request, response, next) => {
+productsRouter.post('/', async (request, response, next) => {
   const body = request.body
   
   const product = new Product({
@@ -31,11 +34,12 @@ productsRouter.post('/', (request, response, next) => {
     price: body.price || [],
   })
 
-  product.save()
-    .then(savedProduct => {
-      response.json(savedProduct)
-    })
-    .catch(error => next(error))
+  try {
+    const savedProduct = await product.save()
+    response.status(201).json(savedProduct)
+  } catch(exception) {
+    next(exception)
+  }
 })
 
 productsRouter.delete('/:id', (request, response, next) => {
