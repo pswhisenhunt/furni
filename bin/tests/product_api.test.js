@@ -11,8 +11,8 @@ describe('/api/products', () => {
   const URL = '/api/products'
   
   beforeEach(async () => {
-    await Product.deleteMany({})
-    await Product.insertMany(helpers.initialProducts)
+    await Product.deleteAll({})
+    await Product.saveAll(helpers.initialProducts)
   })
   
   afterAll(async () => {

@@ -20,22 +20,21 @@ const initialProducts = [
 ]
 
 const nonExistingId = async () => {
-  const product = new Product({
+  const data = {
     categories: [],
     name: 'table',
     description: '',
     materials: [],
     color: [],
     price: 500
-  })
-  await product.save()
-  await product.deleteOne()
-  return product._id.toString()
+  }
+  const product = await Product.save(data)
+  Product.delete(product.id)
+  return product.id
 }
 
 const productsInDb = async () => {
-  const products = await Product.find({})
-  return products.map(p => p.toJSON())
+  return await Product.get()
 }
 
 module.exports = {

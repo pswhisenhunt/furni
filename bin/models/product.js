@@ -15,26 +15,64 @@ const productSchema = new mongoose.Schema({
   }
 })
 
-productSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+const normalizeDbModel = (dbModel) => {
+  return {
+    id: dbModel._id.toString(),
+    name: dbModel.name,
+    description: dbModel.description,
+    materials: dbModel.materials,
+    colors: dbModel.colors,
+    price: dbModel.price
   }
-})
+}
 
-module.exports = mongoose.model('Product', productSchema)
+const Product = mongoose.model('Product', productSchema)
 
-// const normalizeDbModel = (dbModel) => {
-//   return {
-//     id: dbModel._id.toString(),
-//     ...
-//   }
-// }
+module.exports = {
+  get: async () => {
+    const products = await Product.find({})
+    return products.map(p => normalizeDbModel(p))
+  },
 
-// module.exports = {
-//   find: (id) => {
-//     const data = await Product.find(id);
-//     return normalizeDbModel(data);
-//   }
-// }
+  find: async (id) => {
+    const product = await Product.findById(id)
+    return product ? normalizeDbModel(product) : null
+  },
+
+  delete: async (id) => {
+    return await Product.findByIdAndRemove(id)
+  },
+
+  deleteAll: async () => {
+    return await Product.deleteMany({})
+  },
+
+  saveAll: async (products) => {
+    return await Product.insertMany(products)
+  },
+
+  save: async (data) => {
+    const product = new Product({
+      categories: data.categories || [],
+      name: data.name || '',
+      description: data.description || '',
+      materials: data.materials || [],
+      colors: data.colors || [],
+      price: data.price || [],
+    })
+    return await product.save()
+  },
+
+  update: async (id, data) => {
+    const newData = {
+      categories: data.categories || [],
+      name: data.name || '',
+      description: data.description || '',
+      materials: data.materials || [],
+      colors: data.colors || [],
+      price: data.price || [],
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query'})
+    return updatedProduct ? normalizeDbModel(updatedProduct) : null
+  }
+}
