@@ -24,19 +24,19 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
-  passwordHash: {
+  password_hash: {
     type: String,
     required: true
   },
-  firstname: {
+  first_name: {
     type: String,
     trim: true,
-    required: true
+    required: false
   },
-  lastname: {
+  last_name: {
     type: String,
     trim: true,
-    required: true
+    required: false
   },
   address: {
     required: false,
@@ -66,8 +66,8 @@ const userSchema = new mongoose.Schema({
 const normalizeUser = (user) => {
   return {
     id: user._id.toString(),
-    firstname: user.firstname,
-    lastname: user.lastname,
+    firstName: user.first_name,
+    lastName: user.last_name,
     address: {
       street: user.address ? user.address.street : null,
       number: user.address ? user.address.number : null,

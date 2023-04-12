@@ -10,7 +10,7 @@ const colorSchema = new mongoose.Schema({
     required: true,
     min: [7, 'Colors must be in HEX Code format, i.e. #123456']
   },
-  productId: {
+  product_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: false
   }

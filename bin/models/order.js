@@ -12,13 +12,17 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  full_name: {
+    type: String,
+    required: true
+  },
   products: [{
     type: mongoose.Schema.Types.ObjectId,
     required: true
   }],
-  userId: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    required: false
+    required: true
   },
   shipping_address: {
     required: true,
@@ -101,7 +105,7 @@ const orderSchema = new mongoose.Schema({
   status: {
     enum: VALID_STATUSES,
   },
-  isPaid: {
+  is_paid: {
     type: Boolean,
     required: true
   }
@@ -113,13 +117,14 @@ const normalizeOrder = (order) => {
   return {
     id: order._id.toString(),
     number: order.number,
-    userId: order.userId || null,
+    fullName: order.full_name,
+    userId: order.user_id || null,
     products: order.products,
-    shipping_address: order.shipping_address,
-    billing_address: order.billing_address,
-    date_created: order.date_created,
+    shippingAddress: order.shipping_address,
+    billingAddress: order.billing_address,
+    dateCreated: order.date_created,
     status: order.status,
-    isPaid: order.isPaid
+    isPaid: order.is_paid
   }
 }
 

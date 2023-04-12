@@ -5,7 +5,7 @@ const materialSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  productId: {
+  product_id: {
     type: mongoose.Schema.Types.ObjectId,
     requried: false
   }
