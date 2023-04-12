@@ -1,28 +1,59 @@
 const mongoose = require('mongoose')
 
+const VALID_TYPES = [
+  'couch',
+  'bed',
+  'bedframe',
+  'mattress',
+  'table',
+  'chair',
+  'mirror',
+  'plant',
+  'pillow'
+]
+
 const productSchema = new mongoose.Schema({
-  categories: Array,
   name: {
     type: String,
     required: true
   },
-  description: String,
-  materials: Array,
-  colors: Array,
+  description: {
+    type: String,
+    required: false
+  },
+  type: {
+    type: String,
+    enum: VALID_TYPES,
+    required: false
+  },
+  // update these to be arrays with type ObjectId once material, color, and category have been made into Models
+  materials: {
+    type: Array,
+    required: false
+  },
+  colors: {
+    type: Array,
+    required: false,
+  },
+  categories: {
+    type: Array,
+    required: false
+  },
   price: {
     type: Number,
     required: true
   }
 })
 
-const normalizeDbModel = (dbModel) => {
+const normalizeProduct = (product) => {
   return {
-    id: dbModel._id.toString(),
-    name: dbModel.name,
-    description: dbModel.description,
-    materials: dbModel.materials,
-    colors: dbModel.colors,
-    price: dbModel.price
+    id: product._id.toString(),
+    name: product.name,
+    type: product.type,
+    description: product.description,
+    materials: product.materials,
+    colors: product.colors,
+    price: product.price
   }
 }
 
@@ -31,12 +62,12 @@ const Product = mongoose.model('Product', productSchema)
 module.exports = {
   get: async () => {
     const products = await Product.find({})
-    return products.map(p => normalizeDbModel(p))
+    return products.map(p => normalizeProduct(p))
   },
 
   find: async (id) => {
     const product = await Product.findById(id)
-    return product ? normalizeDbModel(product) : null
+    return product ? normalizeProduct(product) : null
   },
 
   delete: async (id) => {
@@ -54,6 +85,7 @@ module.exports = {
   save: async (data) => {
     const product = new Product({
       categories: data.categories || [],
+      type: data.type || '',
       name: data.name || '',
       description: data.description || '',
       materials: data.materials || [],
@@ -66,6 +98,7 @@ module.exports = {
   update: async (id, data) => {
     const newData = {
       categories: data.categories || [],
+      type: data.type || '',
       name: data.name || '',
       description: data.description || '',
       materials: data.materials || [],
@@ -73,6 +106,6 @@ module.exports = {
       price: data.price || [],
     }
     const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query'})
-    return updatedProduct ? normalizeDbModel(updatedProduct) : null
+    return updatedProduct ? normalizeProduct(updatedProduct) : null
   }
 }
