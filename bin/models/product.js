@@ -26,19 +26,18 @@ const productSchema = new mongoose.Schema({
     enum: VALID_TYPES,
     required: false
   },
-  // update these to be arrays with type ObjectId once material, color, and category have been made into Models
-  materials: {
-    type: Array,
+  materials: [{
+    type: mongoose.Schema.Types.ObjectId,
     required: false
-  },
-  colors: {
-    type: Array,
+  }],
+  colors: [{
+    type: mongoose.Schema.Types.ObjectId,
     required: false,
-  },
-  categories: {
-    type: Array,
+  }],
+  categories: [{
+    type: mongoose.Schema.Types.ObjectId,
     required: false
-  },
+  }],
   price: {
     type: Number,
     required: true
