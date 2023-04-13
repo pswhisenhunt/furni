@@ -7,6 +7,7 @@ const materialSchema = new mongoose.Schema({
   },
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'productSchema',
     requried: false
   }
 })
@@ -18,7 +19,7 @@ const normalizeMaterial = (material) => {
   }
 }
 
-const Material = mongoose.Model('Material', materialSchema)
+const Material = mongoose.model('Material', materialSchema)
 
 module.exports = {
   find: async (id) => {

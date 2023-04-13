@@ -29,7 +29,7 @@ const nonExistingId = async () => {
     price: 500
   }
   const product = await Product.save(data)
-  Product.delete(product.id)
+  await Product.delete(product.id)
   return product.id
 }
 

@@ -7,11 +7,11 @@ const categorySchema = new mongoose.Schema({
   },
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
-    required: false
+    ref: 'productSchema'
   }
 })
 
-const Category = mongoose.Model('Category', categorySchema)
+const Category = mongoose.model('Category', categorySchema)
 
 const normalizeCategory = (category) => {
   return {

@@ -9,7 +9,8 @@ const VALID_TYPES = [
   'chair',
   'mirror',
   'plant',
-  'pillow'
+  'pillow',
+  'other'
 ]
 
 const productSchema = new mongoose.Schema({
@@ -24,7 +25,7 @@ const productSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: VALID_TYPES,
-    required: false
+    default: 'other'
   },
   materials: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -84,7 +85,7 @@ module.exports = {
   save: async (data) => {
     const product = new Product({
       categories: data.categories || [],
-      type: data.type || '',
+      type: data.type || 'other',
       name: data.name || '',
       description: data.description || '',
       materials: data.materials || [],

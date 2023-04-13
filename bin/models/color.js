@@ -12,11 +12,12 @@ const colorSchema = new mongoose.Schema({
   },
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'productSchema',
     required: false
   }
 })
 
-const Color = mongoose.Model('Color', colorSchema)
+const Color = mongoose.model('Color', colorSchema)
 
 const normalizeColor = async (color) => {
   return {

@@ -18,10 +18,12 @@ const orderSchema = new mongoose.Schema({
   },
   products: [{
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'productSchema',
     required: true
   }],
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'userSchema',
     required: true
   },
   shipping_address: {
@@ -118,7 +120,7 @@ const normalizeOrder = (order) => {
     id: order._id.toString(),
     number: order.number,
     fullName: order.full_name,
-    userId: order.user_id || null,
+    userId: order.user_d || null,
     products: order.products,
     shippingAddress: order.shipping_address,
     billingAddress: order.billing_address,

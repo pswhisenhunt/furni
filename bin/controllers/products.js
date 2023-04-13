@@ -40,7 +40,6 @@ productsRouter.delete('/:id', (request, response, next) => {
     .catch(error => next((error)))
 })
 
-// refactor
 productsRouter.put('/:id', async (request, response, next) => {
   try {
     const updatedProduct = await Product.update(request.params.id, request.body)
