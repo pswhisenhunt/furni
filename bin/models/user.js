@@ -104,7 +104,27 @@ module.exports = {
     const savedUser = await user.save()
     return savedUser ? normalizeUser(savedUser) : null
   },
+  update: async (id,data) => {
+    const newData = {
+      first_name: data.firstName || '',
+      last_name: data.lastName || '',
+      email: data.email || '',
+      street: data.street || '',
+      number: data.number || '',
+      city: data.city || '',
+      state: data.state || '',
+      zipcode: data.zipcode || '',
+      role: data.role || 'customer',
+      orders: data.orders || [],
+      favorites: data.favorites || []
+    }
+    const updatedUser = await User.findByIdAndUpdate(id, newData, { new: true, content: 'query'})
+    return updatedUser ? normalizeUser(updatedUser) : null
+  },
   deleteAll: async () => {
     return await User.deleteMany({})
+  },
+  delete: async (id) => {
+    return await User.findByIdAndRemove(id)
   }
 }

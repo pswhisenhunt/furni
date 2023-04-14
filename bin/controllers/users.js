@@ -11,6 +11,25 @@ usersRouter.get('/', async (request, response, next) => {
   }
 })
 
+usersRouter.delete('/:id', (request, response, next) => {
+  User.delete(request.params.id)
+    .then(() => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+usersRouter.put('/:id', async (request, response, next) => {
+  try {
+    const updatedUser = await User.update(request.params.id, request.body)
+    if (updatedUser) {
+      response.json(updatedUser)
+    }
+  } catch(exception) {
+    next(exception)
+  }
+})
+
 usersRouter.post('/', async (request, response, next) => {
   const { 
     email,
