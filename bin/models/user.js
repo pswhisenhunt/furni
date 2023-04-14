@@ -38,11 +38,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  street: {
+  street_number: {
     type: String,
     trim: true
   },
-  number: {
+  street_name: {
+    type: String,
+    trim: true
+  },
+  unit_number: {
     type: String,
     trim: true
   },
@@ -67,8 +71,9 @@ const normalizeUser = (user) => {
     id: user._id.toString(),
     firstName: user.first_name,
     lastName: user.last_name,
-    street: user.street,
-    number: user.number,
+    street_name: user.street_name,
+    street_number: user.street_number,
+    unit_number: user.unit_number,
     city: user.city,
     state: user.state,
     zipcode: user.zipcode 
@@ -92,8 +97,9 @@ module.exports = {
       last_name: data.lastName || '',
       email: data.email || '',
       password_hash: data.passwordHash || '',
-      street: data.street || '',
-      number: data.number || '',
+      street_number: data.streetNumber || '',
+      street_name: data.streetName || '',
+      unit_number: data.unitNumber || '',
       city: data.city || '',
       state: data.state || '',
       zipcode: data.zipcode || '',
@@ -109,8 +115,9 @@ module.exports = {
       first_name: data.firstName || '',
       last_name: data.lastName || '',
       email: data.email || '',
-      street: data.street || '',
-      number: data.number || '',
+      street_name: data.streetName || '',
+      steet_number: data.streetNumber || '',
+      unit_number: data.unitNumber || '',
       city: data.city || '',
       state: data.state || '',
       zipcode: data.zipcode || '',
