@@ -11,6 +11,15 @@ usersRouter.get('/', async (request, response, next) => {
   }
 })
 
+usersRouter.get('/:id', async (request, resposne, next) => {
+  try {
+    const user = await User.find(request.params.id)
+    resposne.json(user)
+  } catch(exception) {
+    next(exception)
+  }
+})
+
 usersRouter.delete('/:id', (request, response, next) => {
   User.delete(request.params.id)
     .then(() => {

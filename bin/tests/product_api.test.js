@@ -58,7 +58,7 @@ describe('/api/products', () => {
         .expect(404)
     })
 
-    it('returns a 400 if id is invalid', async () => {
+    it('returns a 500 if id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
       await api
         .get(`${URL}/${invalidId}`)

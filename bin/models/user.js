@@ -71,6 +71,7 @@ const normalizeUser = (user) => {
     id: user._id.toString(),
     firstName: user.first_name,
     lastName: user.last_name,
+    email: user.email,
     street_name: user.street_name,
     street_number: user.street_number,
     unit_number: user.unit_number,
