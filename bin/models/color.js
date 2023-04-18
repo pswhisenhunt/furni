@@ -3,12 +3,13 @@ const mongoose = require('mongoose')
 const colorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   value: {
     type: String,
     required: true,
-    min: [7, 'Colors must be in HEX Code format, i.e. #123456']
+    unique: true
   },
   product_id: {
     type: mongoose.Schema.Types.ObjectId,

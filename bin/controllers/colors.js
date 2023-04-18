@@ -48,7 +48,7 @@ colorsRouter.put('/:id', async (request, response, next) => {
 colorsRouter.delete('/:id', async (request, response, next) => {
   Color.delete(request.params.id)
     .then(() => {
-      response.statusMessage(204).end()
+      response.status(204).end()
     })
     .catch(error => next(error))
 })
