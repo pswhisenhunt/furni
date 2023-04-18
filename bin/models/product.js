@@ -105,7 +105,7 @@ module.exports = {
       colors: data.colors || [],
       price: data.price || [],
     }
-    const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query'})
+    const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query' })
     return updatedProduct ? normalizeProduct(updatedProduct) : null
   }
 }
