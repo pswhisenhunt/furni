@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const categorySchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,8 +22,29 @@ const normalizeCategory = (category) => {
 }
 
 module.exports = {
+  get: async () => {
+    const categories = await Category.find({})
+    return categories ? categories.map(c => normalizeCategory(c)) : null
+  },
   find: async (id) => {
     const category = await Category.findById(id)
     return category ? normalizeCategory(category) : null
+  },
+  save: async (data) => {
+    const category = new Category({
+      name: data.name || ''
+    })
+    const newCategory = await category.save()
+    return newCategory ? normalizeCategory(newCategory) : null
+  },
+  update: async (id, data) => {
+    const newData = {
+      name: data.name || ''
+    }
+    const updatedCategory = await Category.findByIdAndUpdate(id, newData, { new: true, runValidators: true, context: 'query' })
+    return updatedCategory ? normalizeCategory(updatedCategory) : null
+  },
+  delete: async (id) => {
+    return Category.findByIdAndRemove(id)
   }
 }

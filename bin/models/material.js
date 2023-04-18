@@ -35,7 +35,8 @@ module.exports = {
       name: data.name || '',
       product_id: data.productId
     })
-    return await material.save()
+    const newMaterial = await material.save()
+    return newMaterial ? normalizeMaterial(newMaterial) : null
   },
   delete: async (id) => {
     return await Material.findByIdAndRemove(id)

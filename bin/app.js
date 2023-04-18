@@ -10,6 +10,7 @@ const productsRouter = require('./controllers/products')
 const usersRouter = require('./controllers/users')
 const materialsRouter = require('./controllers/materials')
 const colorsRouter = require('./controllers/colors')
+const categoriesRouter = require('./controllers/categories')
 
 mongoose.set('strictQuery', false)
 
@@ -32,6 +33,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/materials', materialsRouter)
 app.use('/api/colors', colorsRouter)
+app.use('/api/categories', categoriesRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

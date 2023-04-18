@@ -92,7 +92,8 @@ module.exports = {
       colors: data.colors || [],
       price: data.price || [],
     })
-    return await product.save()
+    const newProduct = await product.save()
+    return newProduct ? normalizeProduct(newProduct) : null
   },
 
   update: async (id, data) => {

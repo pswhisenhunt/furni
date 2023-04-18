@@ -42,7 +42,8 @@ module.exports = {
       name: data.name || '',
       value: data.value || ''
     })
-    return await color.save()
+    const newColor = await color.save()
+    return newColor ? normalizeColor(newColor) : null
   },
   update: async (id, data) => {
     const newData = {
