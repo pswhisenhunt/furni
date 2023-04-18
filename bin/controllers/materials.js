@@ -37,6 +37,8 @@ materialsRouter.put('/:id', async (request, response, next) => {
     const updatedMaterial = await Material.update(request.params.id, request.body)
     if (updatedMaterial) {
       response.json(updatedMaterial)
+    } else {
+      response.status(400).end()
     }
   } catch(exception) {
     next(exception)

@@ -45,6 +45,8 @@ productsRouter.put('/:id', async (request, response, next) => {
     const updatedProduct = await Product.update(request.params.id, request.body)
     if (updatedProduct) {
       response.json(updatedProduct)
+    } else {
+      response.status(400).end()
     }
   } catch(exception) {
     next(exception)

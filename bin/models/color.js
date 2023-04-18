@@ -19,7 +19,7 @@ const colorSchema = new mongoose.Schema({
 
 const Color = mongoose.model('Color', colorSchema)
 
-const normalizeColor = async (color) => {
+const normalizeColor = (color) => {
   return {
     id: color._id.toString(),
     name: color.name,
@@ -28,8 +28,30 @@ const normalizeColor = async (color) => {
 }
 
 module.exports = {
+  get: async () => {
+    const colors = await Color.find({})
+    return colors ? colors.map(c => normalizeColor(c)) : null
+  },
   find: async (id) => {
     const color = await Color.findById(id)
     return color ? normalizeColor(color) : null
+  },
+  save: async (data) => {
+    const color = new Color({
+      name: data.name || '',
+      value: data.value || ''
+    })
+    return await color.save()
+  },
+  update: async (id, data) => {
+    const newData = {
+      name: data.name || '',
+      value: data.value || ''
+    }
+    const updatedColor = await Color.findByIdAndUpdate(id, newData, { new: true, runValidators: true, context: 'query' })
+    return updatedColor ? normalizeColor(updatedColor) : null
+  },
+  delete: async (id) => {
+    return await Color.findByIdAndRemove(id)
   }
 }
