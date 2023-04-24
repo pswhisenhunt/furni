@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  product_id: {
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'productSchema'
   }
@@ -32,14 +32,16 @@ module.exports = {
   },
   save: async (data) => {
     const category = new Category({
-      name: data.name || ''
+      name: data.name || '',
+      productId: data.productId
     })
     const newCategory = await category.save()
     return newCategory ? normalizeCategory(newCategory) : null
   },
   update: async (id, data) => {
     const newData = {
-      name: data.name || ''
+      name: data.name || '',
+      productId: data.productId
     }
     const updatedCategory = await Category.findByIdAndUpdate(id, newData, { new: true, runValidators: true, context: 'query' })
     return updatedCategory ? normalizeCategory(updatedCategory) : null

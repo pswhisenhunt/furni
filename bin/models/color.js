@@ -11,7 +11,7 @@ const colorSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  product_id: {
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'productSchema',
     required: false
@@ -40,7 +40,8 @@ module.exports = {
   save: async (data) => {
     const color = new Color({
       name: data.name || '',
-      value: data.value || ''
+      value: data.value || '',
+      productId: data.productId
     })
     const newColor = await color.save()
     return newColor ? normalizeColor(newColor) : null
@@ -48,7 +49,8 @@ module.exports = {
   update: async (id, data) => {
     const newData = {
       name: data.name || '',
-      value: data.value || ''
+      value: data.value || '',
+      productId: data.productId
     }
     const updatedColor = await Color.findByIdAndUpdate(id, newData, { new: true, runValidators: true, context: 'query' })
     return updatedColor ? normalizeColor(updatedColor) : null

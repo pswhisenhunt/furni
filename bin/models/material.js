@@ -5,7 +5,7 @@ const materialSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  product_id: {
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'productSchema',
     requried: false
@@ -33,7 +33,7 @@ module.exports = {
   save: async (data) => {
     const material = new Material({
       name: data.name || '',
-      product_id: data.productId
+      productId: data.productId
     })
     const newMaterial = await material.save()
     return newMaterial ? normalizeMaterial(newMaterial) : null
@@ -43,7 +43,8 @@ module.exports = {
   },
   update: async (id, data) => {
     const newData = {
-      name: data.name || ''
+      name: data.name || '',
+      productId: data.productId
     }
     const updatedMaterial = await Material.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query' })
     return updatedMaterial ? normalizeMaterial(updatedMaterial) : null

@@ -26,27 +26,27 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  password_hash: {
+  passwordHash: {
     type: String,
     required: true
   },
-  first_name: {
+  firstName: {
     type: String,
     trim: true
   },
-  last_name: {
+  lastName: {
     type: String,
     trim: true
   },
-  street_number: {
+  streetNumber: {
     type: String,
     trim: true
   },
-  street_name: {
+  streetName: {
     type: String,
     trim: true
   },
-  unit_number: {
+  unitNumber: {
     type: String,
     trim: true
   },
@@ -69,12 +69,12 @@ userSchema.plugin(uniqueValidator)
 const normalizeUser = (user) => {
   return {
     id: user._id.toString(),
-    firstName: user.first_name,
-    lastName: user.last_name,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
-    street_name: user.street_name,
-    street_number: user.street_number,
-    unit_number: user.unit_number,
+    street_name: user.streetName,
+    street_number: user.streetNumber,
+    unit_number: user.unitNumber,
     city: user.city,
     state: user.state,
     zipcode: user.zipcode 
@@ -94,13 +94,13 @@ module.exports = {
   },
   save: async (data) => {
     const user = new User({
-      first_name: data.firstName || '',
-      last_name: data.lastName || '',
+      firstName: data.firstName || '',
+      lastName: data.lastName || '',
       email: data.email || '',
-      password_hash: data.passwordHash || '',
-      street_number: data.streetNumber || '',
-      street_name: data.streetName || '',
-      unit_number: data.unitNumber || '',
+      passwordHash: data.passwordHash || '',
+      streetNumber: data.streetNumber || '',
+      streetName: data.streetName || '',
+      unitNumber: data.unitNumber || '',
       city: data.city || '',
       state: data.state || '',
       zipcode: data.zipcode || '',
@@ -113,12 +113,12 @@ module.exports = {
   },
   update: async (id,data) => {
     const newData = {
-      first_name: data.firstName || '',
-      last_name: data.lastName || '',
+      firstName: data.firstName || '',
+      lastName: data.lastName || '',
       email: data.email || '',
-      street_name: data.streetName || '',
-      steet_number: data.streetNumber || '',
-      unit_number: data.unitNumber || '',
+      streetName: data.streetName || '',
+      steetNumber: data.streetNumber || '',
+      unitNumber: data.unitNumber || '',
       city: data.city || '',
       state: data.state || '',
       zipcode: data.zipcode || '',
