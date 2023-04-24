@@ -25,12 +25,18 @@ productsRouter.get('/:id', async (request, response, next) => {
 
 productsRouter.post('/', async (request, response, next) => {
   try {
+    console.log('REQUEST', request)
     const newProduct = await Product.save(request.body)
     response.status(201).json(newProduct)
   } catch(exception) {
     next(exception)
   }
 })
+
+// productsRouter.put('/:id/images', (request, response) => {
+//   console.log(request.body)
+//   response.status(204).end()
+// })
 
 productsRouter.delete('/:id', (request, response, next) => {
   Product.delete(request.params.id)

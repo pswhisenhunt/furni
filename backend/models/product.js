@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { renameImage } = require('../utils/imageProcessor')
 
 const VALID_TYPES = [
   'couch',
@@ -42,7 +43,10 @@ const productSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true
-  }
+  },
+  images: [{
+    type: String
+  }]
 })
 
 const normalizeProduct = (product) => {
@@ -53,7 +57,8 @@ const normalizeProduct = (product) => {
     description: product.description,
     materials: product.materials,
     colors: product.colors,
-    price: product.price
+    price: product.price,
+    images: product.images
   }
 }
 
@@ -83,6 +88,9 @@ module.exports = {
   },
 
   save: async (data) => {
+    const images = data.images.map(image => renameImage(image))
+    //images.forEach(image => writeImageToFile(image))
+    console.log('DATA', data)
     const product = new Product({
       categories: data.categories || [],
       type: data.type || 'other',
@@ -91,12 +99,15 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      images: images
     })
     const newProduct = await product.save()
     return newProduct ? normalizeProduct(newProduct) : null
   },
-
   update: async (id, data) => {
+    const images = data.images.map(image => renameImage(image))
+    // images.forEach(image => writeImageToFile(image))
+    
     const newData = {
       categories: data.categories || [],
       type: data.type || '',
@@ -105,6 +116,7 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      images: images
     }
     const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query' })
     return updatedProduct ? normalizeProduct(updatedProduct) : null
