@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { useAppSelector } from '../../app/hooks'
-import { Product } from '../../app/types'
+import { useAppSelector } from '../../../app/hooks'
+import { Product } from '../../../app/types'
 
 interface ProductListProps {
   items: Product[]

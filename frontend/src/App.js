@@ -1,10 +1,10 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useAppDispatch } from './app/hooks'
-import { setItems } from './features/productList/productListSlice'
+import { setItems } from './features/shared/productList/productListSlice'
 import { getAll } from './api/products'
 
-import ProductListContainer from './features/productList'
+import ProductListContainer from './features/shared/productList'
 
 const App = () => {
   const dispatch = useAppDispatch()
