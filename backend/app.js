@@ -1,6 +1,7 @@
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
+const path = require('path')
 const cors = require('cors')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -12,6 +13,9 @@ const materialsRouter = require('./controllers/materials')
 const colorsRouter = require('./controllers/colors')
 const categoriesRouter = require('./controllers/categories')
 const ordersRouter = require('./controllers/orders')
+
+const BUILD_DIR = path.join(__dirname, 'build')
+const HTML_FILE = path.join(BUILD_DIR, 'index.html')
 
 mongoose.set('strictQuery', false)
 
@@ -41,5 +45,13 @@ app.use('/api/orders', ordersRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
+
+app.get('/', (request, response) => {
+  response.sendFile(HTML_FILE, function(err) {
+    if (err) {
+      response.status(500).send(err)
+    }
+  })
+})
 
 module.exports = app
