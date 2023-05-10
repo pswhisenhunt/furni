@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 3em;
+}
+
+.header-search {
+  position: relative;
+}
+
+.header-search--bar {
+  height: 2.5em;
+  width: 50em;
+  padding: 1em;
+}
+
+.header-search--bar::placeholder {
+  color: var(--accent-text-color);
+}
+
+.header-search--clickable-img {
+  position: absolute;
+  cursor: pointer;
+  height: 2em;
+  right: 0.5em;
+  top: 0.2em;
+}
+
+.header-icons {
+  border: 1px solid black;
+}
+

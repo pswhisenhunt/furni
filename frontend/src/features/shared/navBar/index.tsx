@@ -31,7 +31,7 @@ const NavBar = ({ direction }: NavBarProps ) => {
   ]
 
   return (
-    <div>
+    <div className='nav-bar'>
       <ul>
         {links.map((link) => {
           const url = `/${link.name}`

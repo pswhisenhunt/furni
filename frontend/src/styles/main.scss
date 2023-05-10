@@ -1,5 +1,6 @@
-body {
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  color: rgb(250, 121, 143);
-  font-weight: bold;
-}
+@use 'normalize';
+@use 'variables';
+@use 'shared';
+@use 'layout';
+@use 'body';
+@use 'header';

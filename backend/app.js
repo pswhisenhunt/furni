@@ -31,7 +31,7 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(cors())
 app.use(express.static('build'))
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(middleware.requestLogger)

@@ -5,7 +5,9 @@ const Home = () => {
   return (
     <Layout>
       <div>
-        Home Page with Layout!
+        <div>CAROUSEL</div>
+        <div>----------------</div>
+        <div>CATEGORIES</div>
       </div>
     </Layout>
   )

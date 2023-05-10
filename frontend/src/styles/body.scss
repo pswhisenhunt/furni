@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 1em 4em;
+  font-size: var(--regular-font-size);
+  font-family: var(--body-font);
+  font-weight: var(--regular-font-weight);
+  color: var(--body-text-color)
+}
+
+h1 {
+  font-size: var(--large-font-size);
+  font-weight: var(--light-font-weight);
+}
