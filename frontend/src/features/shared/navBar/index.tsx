@@ -26,21 +26,31 @@ const NavBar = ({ direction }: NavBarProps ) => {
     },
     {
       id: 4,
+      name: 'tables'
+    },
+    {
+      id: 6,
       name: 'decor'
-    }
+    },
+    {
+      id: 7,
+      name: 'clearance'
+    },
   ]
 
   return (
-    <div className='nav-bar'>
-      <ul>
+    <nav className='nav-bar'>
+      <ul className='nav-link-list'>
         {links.map((link) => {
           const url = `/${link.name}`
           return (
-            <Link key={link.id} to={url}>{link.name.toUpperCase()}</Link>
+            <li className={`nav-link ${link.name === 'clearance' ? 'cta-link' : ''}`}>
+              <Link key={link.id} to={url}>{link.name.toUpperCase()}</Link>
+            </li>
           )
         })}
       </ul>
-    </div>
+    </nav>
   )
 }
 

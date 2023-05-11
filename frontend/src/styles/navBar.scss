@@ -1,0 +1,26 @@
+.nav-bar {
+  background-color: var(--light-grey);
+}
+
+.nav-link-list {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.nav-link-list .nav-link {
+  list-style-type: none;
+  font-size: var(--small-font-size);
+}
+
+.nav-link-list .nav-link a {
+  text-decoration: none;
+  color: var(--dark-grey);
+}
+
+.nav-link-list .cta-link a {
+  color: var(--light-red);
+}
+
+.nav-link-list .nav-link a:hover {
+  font-weight: var(--bold-font-weight);
+}

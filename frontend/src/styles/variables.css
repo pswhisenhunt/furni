@@ -1,6 +1,6 @@
 :root {
   /* FONT STYLES */
-  --small-font-size: 0.5em;
+  --small-font-size: 0.8em;
   --regular-font-size: 1em;
   --medium-font-size: 1.2em;
   --large-font-size: 2.2em;
@@ -13,6 +13,8 @@
   --bold-font-weight: 700;
 
   /* COLORS */
-  --body-text-color: #313457;
-  --accent-text-color: #adafb4;
+  --dark-grey: #8b8c99;
+  --light-grey: #e3e5ea;
+  --medium-grey: #adafb4;
+  --light-red: rgb(234, 117, 117);
 }
