@@ -13,12 +13,12 @@ const Header = ({ title }: HeaderProps  ) => {
       <h1 className='header-title'>{title}</h1>
       <div className='header-search'>
         <input className='header-search--bar' placeholder='Search'/>
-        <img src={`${BASE_IMAGE_URL}/images/looking_glass.svg`} className='header-search--clickable-img'/>
+        <img src={`${BASE_IMAGE_URL}/looking_glass.svg`} className='header-search--clickable-img'/>
       </div>
       <div className='header-icons'>
-        <Icon image={`${BASE_IMAGE_URL}/images/user.svg`} link='#' label='user' />
-        <Icon image={`${BASE_IMAGE_URL}/images/likes.svg`} link='#' label='likes' />
-        <Icon image={`${BASE_IMAGE_URL}/images/bag.svg`} link='#' label='bag' />
+        <Icon image={`${BASE_IMAGE_URL}/user.svg`} link='#' label='user' />
+        <Icon image={`${BASE_IMAGE_URL}/likes.svg`} link='#' label='likes' />
+        <Icon image={`${BASE_IMAGE_URL}/bag.svg`} link='#' label='bag' />
       </div>
     </header>
   )

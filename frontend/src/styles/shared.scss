@@ -2,3 +2,12 @@
   height: 2.5em;
   margin: 0.5em;
 }
+
+.image-link-label {
+  text-decoration: none;
+  position: absolute;
+  top: 22em;
+  left: 10em;
+  font-size: var(--small-font-size);
+  color: var(--medium-grey);
+}

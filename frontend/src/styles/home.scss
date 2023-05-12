@@ -1,0 +1,14 @@
+.home-wrapper {
+
+}
+
+.home-wrapper--list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.home-wrapper--list-item {
+  position: relative;
+  list-style-type: none;
+}
