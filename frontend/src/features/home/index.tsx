@@ -5,6 +5,7 @@ import { BASE_IMAGE_URL } from '../../api/constants'
 
 import Layout from '../shared/layout'
 import ImageLink from '../shared/imageLink'
+import Carousel from '../shared/carousel'
 
 const Home = () => {
   const categories = useAppSelector(state => state.categorySlice.categories)
@@ -13,7 +14,7 @@ const Home = () => {
     <Layout>
       <div className='home-wrapper'>
         <div className='home-wrapper--carousel'>
-          CAROUSEL
+          <Carousel/>
         </div>
         <ul className='home-wrapper--list'>
           {categories.map((category) => {

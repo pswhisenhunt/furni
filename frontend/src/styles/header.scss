@@ -4,6 +4,11 @@
   align-items: center;
 }
 
+.header-title a {
+  text-decoration: none;
+  color: var(--dark-grey);
+}
+
 .header-search {
   position: relative;
 }

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 interface IconProps {
   image: string,
-  label: string,
-  link: string
+  label?: string,
+  link?: string,
 }
 
 const Icon = ({ image, label, link }: IconProps) => {
