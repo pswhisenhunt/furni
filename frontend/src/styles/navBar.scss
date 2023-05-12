@@ -21,6 +21,11 @@
   color: var(--light-red);
 }
 
+.nav-link-list .active-link a {
+  font-weight: var(--bold-font-weight);
+  text-decoration: underline;
+}
+
 .nav-link-list .nav-link a:hover {
   font-weight: var(--bold-font-weight);
 }

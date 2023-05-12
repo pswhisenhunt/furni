@@ -1,5 +1,13 @@
 import * as React from 'react'
 
-const living = () => <div></div>
+import Layout from '../shared/layout'
+
+const living = () => {
+  return (
+    <Layout>
+      <div>Living</div>
+    </Layout>
+  )
+}
 
 export default living

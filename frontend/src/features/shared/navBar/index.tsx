@@ -1,51 +1,44 @@
 import * as React from 'react'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { setActiveLink } from './navBarSlice'
+import { fetchCategories } from '../categoryList/categorySlice'
 import { Link } from 'react-router-dom'
-
-/*
- the links will be replaced with the categories from the server that will be stored
- in state
-*/
+import { Category } from '../../../app/types'
 
 interface NavBarProps {
   direction: string
 }
 
 const NavBar = ({ direction }: NavBarProps ) => {
-  const links = [
-    {
-      id: 1,
-      name: 'bedroom'
-    },
-    {
-      id: 2,
-      name: 'living'
-    },
-    {
-      id: 3,
-      name: 'dining'
-    },
-    {
-      id: 4,
-      name: 'tables'
-    },
-    {
-      id: 6,
-      name: 'decor'
-    },
-    {
-      id: 7,
-      name: 'clearance'
-    },
-  ]
+  const dispatch = useAppDispatch()
+  const links = useAppSelector(state => state.categorySlice.categories)
+  const loadingState = useAppSelector(state => state.categorySlice.status)
+  const activeLink = useAppSelector(state => state.navBarSlice.activeLink)
+  
+  useEffect(() => {
+    if (loadingState === 'pending') {
+      dispatch(fetchCategories())
+    }
+  }, ['categories'])
+
+  const handleSetActiveLink = (link: Category) => {
+    dispatch(setActiveLink(link))
+  }
 
   return (
     <nav className='nav-bar'>
       <ul className='nav-link-list'>
         {links.map((link) => {
           const url = `/${link.name}`
+          const classes = ['nav-link']
+          
+          if (link.name === 'clearance') classes.push('cta-link')
+          if (link.id === activeLink.id) classes.push('active-link')
+          
           return (
-            <li className={`nav-link ${link.name === 'clearance' ? 'cta-link' : ''}`}>
-              <Link key={link.id} to={url}>{link.name.toUpperCase()}</Link>
+            <li key={link.id} className={classes.join(' ')} onClick={() => handleSetActiveLink(link)}>
+              <Link to={url}>{link.name.toUpperCase()}</Link>
             </li>
           )
         })}

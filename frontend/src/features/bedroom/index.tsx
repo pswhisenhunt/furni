@@ -1,5 +1,13 @@
 import * as React from 'react'
 
-const bedroom = () => <div></div>
+import Layout from '../shared/layout'
+
+const bedroom = () => {
+  return (
+    <Layout>
+      <div>Bedroom</div>
+    </Layout>
+  )
+}
 
 export default bedroom

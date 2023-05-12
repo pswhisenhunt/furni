@@ -11,5 +11,12 @@ export type Product = {
   images: string[]
 }
 
+export type Category = {
+  id: string,
+  name: string
+}
+
+export type Status = 'pending' | 'fulfilled' | 'rejected'
+
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
