@@ -1,66 +1,68 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BASE_IMAGE_URL } from '../../../api/constants'
 
-const Carousel = () => {
-  /** 
-   * TODO: add the useSelector to grab these iamges from state if they exist.
-   * Keep the placeholder images though - we still need a default within this
-   * reusable component incase the images do not exist on the server or take a while to 
-   * load.
-   * 
-   */
+interface CarouselProps {
+  images?: string[]
+}
 
-  const images = [
+const Carousel = ({ images }: CarouselProps) => {
+  const [ currentIndex, setCurrentIndex ] = useState<number>(0)
+  const placeholders = [
     `${BASE_IMAGE_URL}/carousel_placeholder_1.svg`,
     `${BASE_IMAGE_URL}/carousel_placeholder_2.svg`,
     `${BASE_IMAGE_URL}/carousel_placeholder_3.svg`
   ]
-  const [ currentImage, setCurrentImage ] = useState(images[0])
-  
-  const handleLeftArrowClick = () => {
-    const currentImageIndex = getCurrentImageIndex()
-    if (currentImageIndex !== 0) {
-      setCurrentImage(images[currentImageIndex - 1])
-    } else {
-      setCurrentImage(images[images.length - 1])
-    }
-  }
+  images = images && images.length > 0 ? images : placeholders
 
-  const handleRightArrowClick = () => {
-    const currentImageIndex = getCurrentImageIndex()
-    if (currentImageIndex === images.length - 1) {
-      setCurrentImage(images[0])
-    } else {
-      setCurrentImage(images[currentImageIndex + 1])
-    }
-  }
+  useEffect(() => {
+    const imageDisplayTimer = setInterval(() => {
+      let newIndex = currentIndex
+      if (currentIndex === images.length - 1) {
+        newIndex = 0
+      } else {
+        newIndex += 1
+      }
+      setCurrentIndex(newIndex)
+    }, 5000)
 
-  const getCurrentImageIndex = () => {
-    return images.findIndex((image) => image === currentImage)
+    return () => clearInterval(imageDisplayTimer)
+  })
+ 
+  const handleArrowClick = (direction: string) => {
+    let newIndex: number = 0
+    if (direction === 'left') {
+      if (currentIndex !== 0) {
+        newIndex = currentIndex - 1
+      } else {
+        newIndex = images.length - 1
+      }
+    } else {
+      if (currentIndex !== images.length -1) {
+        newIndex = currentIndex + 1
+      }
+    }
+    setCurrentIndex(newIndex)
   }
 
   const generateControls = () => {
-    return images.map((image, index) => {
+    return images.map((_, index) => {
       const classes = ['carousel-control']
-      if (image === currentImage) classes.push('active')
+      if (index === currentIndex) classes.push('active')
       return (
         <li key={index} className='control-list-item'>
-          <div className={classes.join(' ')} onClick={() => setCurrentImage(image)}></div>
+          <button className={classes.join(' ')} onClick={() => setCurrentIndex(index)}></button>
         </li>
       )
     })
   }
 
   return (
-    <div className='carousel-wrapper' style={{background: `url(${currentImage}) rgb(103 105 111) no-repeat center`}}>
-      <span className='left-arrow'>
-        <img src={`${BASE_IMAGE_URL}/left_arrow.svg`}  onClick={handleLeftArrowClick}/>
-      </span>
-      <span className='right-arrow'>
-        <img src={`${BASE_IMAGE_URL}/right_arrow.svg`} onClick={handleRightArrowClick}/>
-      </span>
-      <div className='carousel-wrapper--controls'>
+    <div className='carousel'>
+      <img className='carousel-image-container' src={images[currentIndex]} />
+      <button className='carousel-arrow left' onClick={() => handleArrowClick('left')}></button>
+      <button className='carousel-arrow right' onClick={() => handleArrowClick('right')}></button>
+      <div className='carousel-controls'>
         <ul className='carousel-control-list'>
           {generateControls()}
         </ul>

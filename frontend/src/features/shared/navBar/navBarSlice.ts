@@ -18,10 +18,16 @@ const navBarSlice = createSlice({
   reducers: {
     setActiveLink(state: NavBarState, action: PayloadAction<Category>) {
       state.activeLink = action.payload
+    },
+    clearActiveLink(state: NavBarState) {
+      state.activeLink = { 
+        id: '', 
+        name : ''
+      }
     }
   }
 })
 
-export const { setActiveLink } = navBarSlice.actions
+export const { setActiveLink, clearActiveLink } = navBarSlice.actions
 
 export default navBarSlice.reducer

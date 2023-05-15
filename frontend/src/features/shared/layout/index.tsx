@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useAppSelector } from '../../../app/hooks'
 
 import Header from '../../header'
 import Footer from '../../footer'
@@ -12,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className='layout'>
       <Header title='FURNI'/>
-      <NavBar direction='horizontal' />
+      <NavBar direction='horizontal'/>
       <main className='layout-main'>
         {children}
       </main>

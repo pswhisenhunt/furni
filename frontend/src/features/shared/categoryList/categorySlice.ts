@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Category, Status } from '../../../app/types'
-import { BASE_API_URL } from '../../../api/constants'
+import { get } from '../../../api/'
+import { CATEGORIES_URL } from '../../../api/constants'
 
 interface CategoryListState {
   categories: Category[],
@@ -13,9 +13,9 @@ const initialState: CategoryListState = {
   status: 'pending'
 }
 
+
 export const fetchCategories = createAsyncThunk('categories/fetch', async () => {
-  const resposne = await axios.get(`${BASE_API_URL}/categories`)
-  return resposne.data
+  return await get(CATEGORIES_URL)
 })
 
 const categoryListSlice = createSlice({

@@ -1,17 +1,26 @@
 import * as React from 'react'
-import Icon from '../shared/icon'
 import { Link } from 'react-router-dom'
+import { useAppDispatch } from '../../app/hooks'
+import { clearActiveLink } from '../shared/navBar/navBarSlice'
 import { BASE_IMAGE_URL } from '../../api/constants'
+
+import Icon from '../shared/icon'
 
 interface HeaderProps {
   title: string
 }
 
 const Header = ({ title }: HeaderProps  ) => {
+  const dispatch = useAppDispatch()
+  
+  const handleHomeLinkClick = () => {
+    dispatch(clearActiveLink())
+  }
+
   return (
     <header className='header'>
       <h1 className='header-title'>
-        <Link to='/'>{title}</Link>
+        <Link to='/' onClick={handleHomeLinkClick}>{title}</Link>
       </h1>
       <div className='header-search'>
         <input className='header-search--bar' placeholder='Search'/>

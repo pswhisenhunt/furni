@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom'
 import { Category } from '../../../app/types'
 
 interface NavBarProps {
-  direction: string
+  direction: string,
+  activeLink?: string
 }
 
 const NavBar = ({ direction }: NavBarProps ) => {
@@ -20,7 +21,7 @@ const NavBar = ({ direction }: NavBarProps ) => {
     if (loadingState === 'pending') {
       dispatch(fetchCategories())
     }
-  }, ['categories'])
+  }, [links])
 
   const handleSetActiveLink = (link: Category) => {
     dispatch(setActiveLink(link))
@@ -32,9 +33,9 @@ const NavBar = ({ direction }: NavBarProps ) => {
         {links.map((link) => {
           const url = `/${link.name}`
           const classes = ['nav-link']
-          
-          if (link.name === 'clearance') classes.push('cta-link')
-          if (link.id === activeLink.id) classes.push('active-link')
+
+          if (link.name === 'clearance') classes.push('cta')
+          if (link.id === activeLink.id) classes.push('active')
           
           return (
             <li key={link.id} className={classes.join(' ')} onClick={() => handleSetActiveLink(link)}>
