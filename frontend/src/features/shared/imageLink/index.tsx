@@ -5,11 +5,11 @@ interface ImageLinkProps {
   src: string,
   linkUrl: string,
   description: string,
-  size: string,
-  label: string
+  size?: string,
+  label?: string
 }
 
-const ImageLink = ({ src = '', linkUrl = '', description= '', size = '5em', label = ''}: ImageLinkProps) => {
+const ImageLink = ({ src = '', linkUrl = '', description= '', size = '5em', label = '' }: ImageLinkProps) => {
   const imgStyles = {
     width: size,
     height: size

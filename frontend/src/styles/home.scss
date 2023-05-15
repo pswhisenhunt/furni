@@ -1,14 +1,20 @@
-.home-wrapper {
-
-}
-
-.home-wrapper--list {
+.home--list {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
 }
 
-.home-wrapper--list-item {
+.home--list-item {
   position: relative;
   list-style-type: none;
+}
+
+.grow-rotate-on-hover {
+  transform: perspective(1px) translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+  
+  &:hover, :focus, :active {
+    transform: scale(1.1) rotate(4deg);
+  }
 }

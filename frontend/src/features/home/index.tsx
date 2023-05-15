@@ -9,15 +9,15 @@ const Home = () => {
   const categories = useAppSelector(state => state.categorySlice.categories)
   
   return (
-    <main className='home-wrapper'>
-      <div className='home-wrapper--carousel'>
+    <main className='home'>
+      <div className='home--carousel'>
         <Carousel/>
       </div>
-      <ul className='home-wrapper--list'>
+      <ul className='home--list'>
         {categories.map((category) => {
           const url = `/${category.name}`
           return (
-            <li key={category.id} className='home-wrapper--list-item'>
+            <li key={category.id} className='home--list-item grow-rotate-on-hover'>
               <ImageLink 
                 src={`${BASE_IMAGE_URL}/placeholder.svg`}
                 description={category.name}

@@ -1,8 +1,12 @@
 import * as React from 'react'
 
+import NavBar from '../shared/navBar'
+
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <footer className='footer'>
+      <NavBar direction='vertical'/>
+    </footer>
   )
 }
 

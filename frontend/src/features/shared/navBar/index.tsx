@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { Category } from '../../../app/types'
 
 interface NavBarProps {
-  direction: string,
+  direction: 'horizontal' | 'vertical',
   activeLink?: string
 }
 

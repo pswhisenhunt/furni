@@ -8,6 +8,7 @@
 }
 
 .nav-link-list .nav-link {
+  position: relative;
   list-style-type: none;
   font-size: var(--small-font-size);
 
@@ -17,15 +18,31 @@
 
   &.active a {
     font-weight: var(--bold-font-weight);
-    text-decoration: underline;  
   }
 }
 
 .nav-link-list .nav-link a {
   text-decoration: none;
-  color: var(--dark-grey);
+  color: inherit;
 
   &:hover {
     font-weight: var(--bold-font-weight);
+  }
+
+  &:hover::after, :focus::after {
+    opacity: 1;
+    width: 100%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 0.2em;
+    background-color: var(--dark-grey);
+    opacity: 0;
+    transition: opacity 300ms, width 300ms;
   }
 }
