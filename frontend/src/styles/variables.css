@@ -3,9 +3,11 @@
   --small-font-size: 0.8em;
   --regular-font-size: 1em;
   --medium-font-size: 1.2em;
-  --large-font-size: 2.2em;
+  --large-font-size: 1.5em;
+  --extra-large-font-size: 2em;
 
   --body-font: Arial, Helvetica, sans-serif;
+  --decorative-font: 'Oleo Script', cursive;
 
   --light-font-weight: 100;
   --regular-font-weight: 200;

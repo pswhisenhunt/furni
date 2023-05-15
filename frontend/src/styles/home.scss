@@ -8,13 +8,3 @@
   position: relative;
   list-style-type: none;
 }
-
-.grow-rotate-on-hover {
-  transform: perspective(1px) translateZ(0);
-  transition-duration: 0.3s;
-  transition-property: transform;
-  
-  &:hover, :focus, :active {
-    transform: scale(1.1) rotate(4deg);
-  }
-}

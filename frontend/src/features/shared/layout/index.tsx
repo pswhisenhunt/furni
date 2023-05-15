@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className='layout'>
       <Header title='FURNI'/>
-      <NavBar direction='horizontal'/>
+      <NavBar/>
       <main className='layout-main'>
         {children}
       </main>
