@@ -27,9 +27,9 @@ const Header = ({ title }: HeaderProps  ) => {
         <img src={`${BASE_IMAGE_URL}/looking_glass.svg`} className='header-search--clickable-img'/>
       </div>
       <div className='header-icons'>
-        <Icon image={`${BASE_IMAGE_URL}/user.svg`} link='#' label='user' />
-        <Icon image={`${BASE_IMAGE_URL}/likes.svg`} link='#' label='likes' />
-        <Icon image={`${BASE_IMAGE_URL}/bag.svg`} link='#' label='bag' />
+        <Icon image={`${BASE_IMAGE_URL}/user.svg`} link='/user' label='user' />
+        <Icon image={`${BASE_IMAGE_URL}/likes.svg`} link='/user/likes' label='likes' />
+        <Icon image={`${BASE_IMAGE_URL}/bag.svg`} link='/cart' label='bag' />
       </div>
     </header>
   )

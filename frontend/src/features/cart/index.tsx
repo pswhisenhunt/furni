@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-const CartContainer = () => {
+const Cart = () => {
   return (
     <div>Cart page</div>
   )
 }
 
-export default CartContainer
+export default Cart

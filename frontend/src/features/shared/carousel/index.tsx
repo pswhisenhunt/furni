@@ -9,9 +9,11 @@ interface CarouselProps {
 const Carousel = ({ images }: CarouselProps) => {
   const [ currentIndex, setCurrentIndex ] = useState<number>(0)
   const placeholders = [
-    `${BASE_IMAGE_URL}/carousel_placeholder_1.svg`,
-    `${BASE_IMAGE_URL}/carousel_placeholder_2.svg`,
-    `${BASE_IMAGE_URL}/carousel_placeholder_3.svg`
+    `${BASE_IMAGE_URL}/placeholder_1.svg`,
+    `${BASE_IMAGE_URL}/placeholder_2.svg`,
+    `${BASE_IMAGE_URL}/placeholder_3.svg`,
+    `${BASE_IMAGE_URL}/placeholder_4.svg`,
+    `${BASE_IMAGE_URL}/placeholder_5.svg`
   ]
   images = images && images.length > 0 ? images : placeholders
 
