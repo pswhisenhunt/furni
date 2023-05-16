@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// todo - remove product id from color category and material
 const categorySchema = new mongoose.Schema({
   name: {
     type: String,

@@ -7,7 +7,7 @@ interface IconProps {
   link?: string,
 }
 
-const Icon = ({ image, label, link }: IconProps) => {
+const Icon: React.FC<IconProps> = ({ image, label, link }): JSX.Element => {
   return (
     <Link to={link} className='icon'>
       <img src={image} alt={label} className='icon--img'/>

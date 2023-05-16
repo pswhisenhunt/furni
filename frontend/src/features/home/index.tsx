@@ -5,7 +5,7 @@ import { BASE_IMAGE_URL } from '../../api/constants'
 import ImageLink from '../shared/imageLink'
 import Carousel from '../shared/carousel'
 
-const Home = () => {
+const Home: React.FC = (): JSX.Element => {
   const categories = useAppSelector(state => state.categorySlice.categories)
   
   return (

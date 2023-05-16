@@ -9,7 +9,7 @@ interface LayoutProps {
   children: JSX.Element
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ children }): JSX.Element => {
   return (
     <div className='layout'>
       <Header title='FURNI'/>

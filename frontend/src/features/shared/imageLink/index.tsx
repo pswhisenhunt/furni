@@ -9,7 +9,7 @@ interface ImageLinkProps {
   label?: string
 }
 
-const ImageLink = ({ src = '', linkUrl = '', description= '', size = '5em', label = '' }: ImageLinkProps) => {
+const ImageLink: React.FC<ImageLinkProps> = ({ src = '', linkUrl = '', description= '', size = '5em', label = '' }): JSX.Element => {
   const imgStyles = {
     width: size,
     height: size

@@ -2,15 +2,15 @@ import * as React from 'react'
 
 import { Link } from 'react-router-dom'
 
-const Footer = () => {
+const Footer: React.FC = (): JSX.Element => {
   const supportLinks = ['Contact Us', 'Help Center', 'FAQ', 'Return Policy', 'Delivery']
   const companyLinks = ['About Us', 'Community', 'Press', 'Careers']
   const storeLinks = ['Store Locator', 'Appointments']
 
   const footerColumnLinks = (links: string[]) => {
-     return links.map((link) => {
+     return links.map((link, index) => {
       return (
-        <li className='footer-column-link'>
+        <li className='footer-column-link' key={`${index}_${link}`}>
           <Link to='#'>{link}</Link>
         </li>
       )

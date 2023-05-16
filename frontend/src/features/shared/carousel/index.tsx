@@ -6,7 +6,7 @@ interface CarouselProps {
   images?: string[]
 }
 
-const Carousel = ({ images }: CarouselProps) => {
+const Carousel: React.FC<CarouselProps> = ({ images }): JSX.Element => {
   const [ currentIndex, setCurrentIndex ] = useState<number>(0)
   const placeholders = [
     `${BASE_IMAGE_URL}/placeholder_1.svg`,

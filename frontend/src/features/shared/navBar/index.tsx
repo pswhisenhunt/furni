@@ -6,7 +6,7 @@ import { fetchCategories } from '../categoryList/categorySlice'
 import { Link } from 'react-router-dom'
 import { Category } from '../../../app/types'
 
-const NavBar = () => {
+const NavBar: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const links = useAppSelector(state => state.categorySlice.categories)
   const loadingState = useAppSelector(state => state.categorySlice.status)
