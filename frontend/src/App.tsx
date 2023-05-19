@@ -10,6 +10,7 @@ import Decor from './features/decor'
 import User from './features/user'
 import Likes from './features/likes'
 import Cart from './features/cart'
+import ProductList from './features/shared/productList'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path='/user' Component={User}/>
           <Route path='/user/likes' Component={Likes}/>
           <Route path='/cart' Component={Cart}/>
+          <Route path='/search' Component={ProductList}/>
         </Routes>
       </Layout>
     </div>

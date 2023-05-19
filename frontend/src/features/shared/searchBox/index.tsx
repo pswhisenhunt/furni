@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import { fetchsuggestedSearchTerms } from './searchBoxSlice'
 import { SearchTerm } from '../../../app/types'
@@ -11,9 +12,10 @@ interface SearchBoxProps {
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({ suggestedSearchAttribute = 'type' }): JSX.Element => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
   const [ inputValue, setInputValue ] = useState('')
   const [ filteredSuggestions, setFilteredSuggestions ] = useState<SearchTerm[]>([])
-  const dispatch = useAppDispatch()
   const suggestedSearchTerms = useAppSelector(state => state.searchBoxSlice.suggestedSearchTerms)
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ suggestedSearchAttribute = 'type'
   },[])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim()
+    const value = e.target.value
     if (!value) {
       setInputValue('')
       setFilteredSuggestions([])
@@ -45,11 +47,19 @@ const SearchBox: React.FC<SearchBoxProps> = ({ suggestedSearchAttribute = 'type'
     }
   }
 
+  const handleSubmit = () => {
+    if (!inputValue) return
+    const searchParams = new URLSearchParams();
+    searchParams.append('query', inputValue.trim());
+    navigate(`/search?${searchParams.toString()}`);
+  }
+
   return (
     <AutoCompleteSeachBar
       suggestedSearchTerms={filteredSuggestions}
       onChange={handleInputChange}
       onSelect={handleSelection}
+      onSubmit={handleSubmit}
       resetSuggestions={resetSuggestions}
       value={inputValue}
     />

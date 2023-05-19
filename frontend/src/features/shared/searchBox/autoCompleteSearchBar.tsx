@@ -6,12 +6,13 @@ import { BASE_IMAGE_URL } from '../../../api/constants'
 interface AutoCompleteSeachBarProps {
   suggestedSearchTerms: SearchTerm[]
   onChange: React.ChangeEventHandler,
-  onSelect: (index: number) => void
-  resetSuggestions: Function,
+  onSelect: (index: number) => void,
+  onSubmit: () => void,
+  resetSuggestions: () => void,
   value: string
 }
 
-const AutoCompleteSeachBar: React.FC<AutoCompleteSeachBarProps> = ({ suggestedSearchTerms, onChange, onSelect, resetSuggestions, value }) => {
+const AutoCompleteSeachBar: React.FC<AutoCompleteSeachBarProps> = ({ suggestedSearchTerms, onChange, onSelect, resetSuggestions, value, onSubmit }) => {
   const [ focusedIndex, setFocusedIndex ] = useState<number>(-1)
   const selectedSuggestionContainer = useRef(null)
 
@@ -27,6 +28,7 @@ const AutoCompleteSeachBar: React.FC<AutoCompleteSeachBarProps> = ({ suggestedSe
     if (key === 'Enter') {
       e.preventDefault()
       onSelect && onSelect(focusedIndex)
+      onSubmit()
     }
     if (key === 'Escape') {
       resetAutoCompleteSearch()
@@ -42,7 +44,7 @@ const AutoCompleteSeachBar: React.FC<AutoCompleteSeachBarProps> = ({ suggestedSe
   return (
     <div className='header-search' tabIndex={1} onKeyDown={handleKeyDown} onBlur={resetAutoCompleteSearch}>
       <input className='header-search--bar' placeholder='Search' onChange={(e) => onChange(e)} value={value}/>
-      <img src={`${BASE_IMAGE_URL}/looking_glass.svg`} className='header-search--clickable-img'/>
+      <img src={`${BASE_IMAGE_URL}/looking_glass.svg`} className='header-search--clickable-img' onClick={onSubmit}/>
       
       { suggestedSearchTerms.length > 0 && 
         <div className='search-suggestions-container'>
