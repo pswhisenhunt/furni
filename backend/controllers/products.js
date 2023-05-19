@@ -23,6 +23,15 @@ productsRouter.get('/:id', async (request, response, next) => {
   }
 })
 
+productsRouter.get('/categories/:categoryId', async (request, response, next) => {
+  try {
+    const products = await Product.findByCategory(request.params.categoryId, Number(request.query.page))
+    response.json(products)
+  } catch(exception) {
+    next(exception)
+  }
+})
+
 productsRouter.post('/', async (request, response, next) => {
   try {
     const newProduct = await Product.save(request.body)
@@ -46,8 +55,8 @@ productsRouter.post('/searchTerms', async (request, response, next) => {
 productsRouter.post('/search', async (request, response, next) => {
   try {
     const searchTerm = request.body.searchTerm
-    const limit = request.body.limit
-    const page = request.body.page
+    const limit = Math.min(request.body.limit, 50)
+    const page = Math.min(0, request.body.page)
     const searchResults = await Product.search(searchTerm, limit, page)
     response.json(searchResults)
   } catch(exception) {

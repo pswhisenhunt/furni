@@ -86,7 +86,17 @@ module.exports = {
       .populate({ path: 'colors', select: 'name value'})
       .populate({ path: 'categories', select: 'name'})
       .populate({ path: 'materials', select: 'name'})
-    return products.map(p => normalizeProduct(p))
+    return products ? products.map((p) => normalizeProduct(p)) : null
+  },
+
+  findByCategory: async (categoryId, page) => {
+    const MAX_PRODUCTS = 15
+    const products = await Product.find({ categories: { $in: [categoryId] } })
+      .select('description price images')
+      .populate({ path: 'categories', select: 'name'})
+      .limit(MAX_PRODUCTS)
+      .skip(MAX_PRODUCTS * page)
+    return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
   getSearchTerms: async (attribute = 'description', limit = 50) => {
@@ -99,7 +109,6 @@ module.exports = {
   },
 
   search: async (searchTerm, limit = 25, page = 0) => {
-    page = Math.max(0, page)
     const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } })
       .select('description price images')
       .limit(limit)

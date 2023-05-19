@@ -10,15 +10,11 @@ categoriesRouter.get('/', async (request, response, next) => {
   }
 })
 
-categoriesRouter.get('/:id', async (request, response, next) => {
+categoriesRouter.post('/:id/products', async (request, response, next) => {
   try {
-    const category  = await Category.find(request.params.id) 
-    if (category) {
-      response.json(category)
-    } else {
-      response.status(404).end()
-    }
-  } catch(exception) {
+    const productsForCategory = await Category.findProducts(request.params.id)
+    response.json(productsForCategory)
+  } catch (exception) {
     next(exception)
   }
 })

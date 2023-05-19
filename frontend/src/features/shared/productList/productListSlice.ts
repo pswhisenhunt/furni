@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import { Product, Status } from '../../../app/types'
-import { post } from '../../../api'
-import { SEARCH_PRODUCTS_URL } from '../../../api/constants'
+import { createSlice, PayloadAction, createAsyncThunk, current } from '@reduxjs/toolkit'
+import { Category, Product, Status } from '../../../app/types'
+import { post, get } from '../../../api'
+import { SEARCH_PRODUCTS_URL, FETCH_PRODUCTS_BY_CATEGORY_URL } from '../../../api/constants'
 
 interface ProductListState {
   items: Product[],
@@ -17,14 +17,22 @@ export const fetchSearchResults = createAsyncThunk('products/searchResults', asy
   return await post(SEARCH_PRODUCTS_URL, { searchTerm: searchTerm })
 })
 
+export const fetchProductsForCategory = createAsyncThunk('products/fetchByCategory', async ({ 
+  category, 
+  page,
+}: { 
+  category: Category, 
+  page: number
+}) => {
+  const searchParams = new URLSearchParams();
+  searchParams.append('page', String(page));
+  return await get(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${category.id}?${searchParams.toString()}`)
+})
+
 const productListSlice = createSlice({
   name: 'productList',
   initialState,
-  reducers: {
-    setItems(state: ProductListState, action: PayloadAction<Product[]>) {
-      state.items = action.payload
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSearchResults.pending, (state: ProductListState) => {
       state.status = 'pending'
@@ -36,9 +44,11 @@ const productListSlice = createSlice({
     builder.addCase(fetchSearchResults.rejected, (state: ProductListState) => {
       state.status = 'rejected'
     })
+    builder.addCase(fetchProductsForCategory.fulfilled, (state: ProductListState, action: PayloadAction<Product[]>) => {
+      state.status = 'fulfilled'
+      state.items = action.payload
+    })
   }
 })
-
-export const { setItems } = productListSlice.actions
 
 export default productListSlice.reducer

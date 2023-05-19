@@ -1,30 +1,38 @@
 import * as React from 'react'
-import { useEffect} from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { Product } from '../../../app/types'
-import { fetchSearchResults } from '../productList/productListSlice'
+import { Category } from '../../../app/types'
+import { fetchSearchResults, fetchProductsForCategory } from '../productList/productListSlice'
 
 interface ProductListProps {
-  items: Product[]
+  category?: Category
 }
 
-const ProductListContainer = (props: ProductListProps) => {
+const ProductList: React.FC<ProductListProps> = ({ category }): JSX.Element => {
   const items = useAppSelector(state => state.productList.items)
+  const [ page, setPage ] = useState(0)
   const dispatch = useAppDispatch()
   let [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('query')
-  
+
   useEffect(() => {
-    if (!query) return
-    dispatch(fetchSearchResults(query))
-  }, [items])
+    const query = searchParams.get('query')
+    if (query) {
+      dispatch(fetchSearchResults(query))
+    } else {
+      dispatch(fetchProductsForCategory(({ category, page: page })))
+    }
+  }, [ page ])
   
   return (
     <ul>
       {items.map(item => <li key={item.id}>{item.description}</li>)}
+      { page > 0 &&
+        <button onClick={() => setPage(page - 1) }>get previous page</button>
+      }
+      <button onClick={() => setPage(page + 1) }>get next page</button>
     </ul>
   )
 }
 
-export default ProductListContainer
+export default ProductList
