@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { clearActiveLink } from '../shared/navBar/navBarSlice'
@@ -24,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ title }): JSX.Element => {
       <h1 className='header-title'>
         <Link to='/' onClick={handleHomeLinkClick}>{title}</Link>
       </h1>
-      <SearchBox/>
+      <SearchBox suggestedSearchAttribute='description'/>
       <div className='header-icons'>
         <Icon image={`${BASE_IMAGE_URL}/user.svg`} link='/user' label='user' />
         <Icon image={`${BASE_IMAGE_URL}/likes.svg`} link='/user/likes' label='likes' />

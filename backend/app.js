@@ -13,7 +13,6 @@ const materialsRouter = require('./controllers/materials')
 const colorsRouter = require('./controllers/colors')
 const categoriesRouter = require('./controllers/categories')
 const ordersRouter = require('./controllers/orders')
-//const color = require('./models/color')
 
 const BUILD_DIR = path.join(__dirname, 'build')
 const HTML_FILE = path.join(BUILD_DIR, 'index.html')
@@ -55,39 +54,4 @@ app.get('/', (request, response) => {
   })
 })
 
-// const generateColors = async () => {
-//   const savedColors = await Promise.all([{
-//     name: 'white',
-//     value: '#FFFFFF',
-//   },
-//   {
-//     name: 'red',
-//     value: '#FF0000',
-//   }].map(c => color.save(c)))
-
-//   return savedColors
-// }
-
-// generateColors()
-
-// function getRandomInt(max) {
-//   return Math.floor(Math.random() * max)
-// }
-
-// const generateProducts = async () => {
-//   const colors = await color.get()
-//   const items = ['table', 'chair']
-//   const adjectives = ['hairy', 'large', 'metal']
-
-//   const products = []
-//   for (let i = 0; i < 100; i++) {
-//     products.push({
-//       name: `${adjectives[getRandomInt(adjectives.length - 1)]} ${items[getRandomInt(items.length - 1)]}`,
-//       color: colors[getRandomInt(colors.length - 1)].id,
-//     })
-    
-//   }
-//   console.log(products)
-// }
-// generateProducts()
 module.exports = app

@@ -10,7 +10,7 @@ const ProductListContainer = (props: ProductListProps) => {
   const items = useAppSelector(state => state.productList.items)
   return (
     <ul>
-      {items.map(item => <li key={item.id}>{item.name}</li>)}
+      {items.map(item => <li key={item.id}>{item.description}</li>)}
     </ul>
   )
 }

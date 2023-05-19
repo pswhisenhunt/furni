@@ -2,13 +2,19 @@ import { store } from './store'
 
 export type Product = {
   id: string,
-  name: string,
+  number: string,
   type: string,
   description: string,
   materials: string[],
+  categories: string[],
   colors: string[],
   price: number,
   images: string[]
+}
+
+export type SearchTerm = {
+  id: string,
+  term: string
 }
 
 export type Category = {

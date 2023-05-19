@@ -14,7 +14,7 @@ const VALID_TYPES = [
 ]
 
 const productSchema = new mongoose.Schema({
-  name: {
+  number: {
     type: String,
     required: true
   },
@@ -29,15 +29,18 @@ const productSchema = new mongoose.Schema({
   },
   materials: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: false
+    required: false,
+    ref: 'Material'
   }],
   colors: [{
     type: mongoose.Schema.Types.ObjectId,
     required: false,
+    ref: 'Color'
   }],
   categories: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: false
+    required: false,
+    ref: 'Category'
   }],
   price: {
     type: Number,
@@ -51,11 +54,18 @@ const productSchema = new mongoose.Schema({
 const normalizeProduct = (product) => {
   return {
     id: product._id.toString(),
-    name: product.name,
+    number: product.number,
     type: product.type,
     description: product.description,
-    materials: product.materials,
-    colors: product.colors,
+    materials: product.materials && product.materials.map((p) => {
+      return { id: p._id.toString(), name: p.name }
+    }),
+    categories:  product.categories && product.categories.map((p) => {
+      return { id: p._id.toString(), name: p.name }
+    }),
+    colors:  product.colors && product.colors.map((p) => {
+      return { id: p._id.toString(), name: p.name, value: p.value }
+    }),
     price: product.price,
     images: product.images
   }
@@ -64,14 +74,37 @@ const normalizeProduct = (product) => {
 const Product = mongoose.model('Product', productSchema)
 
 module.exports = {
-  get: async () => {
-    const products = await Product.find({})
+  get: async (id) => {
+    if (id) {
+      const product = await Product.findById(id)
+        .populate({ path: 'colors', select: 'name value'})
+        .populate({ path: 'categories', select: 'name'})
+        .populate({ path: 'materials', select: 'name'})
+      return product ? normalizeProduct(product) : null
+    }
+    const products = await Product.find()
+      .populate({ path: 'colors', select: 'name value'})
+      .populate({ path: 'categories', select: 'name'})
+      .populate({ path: 'materials', select: 'name'})
     return products.map(p => normalizeProduct(p))
   },
 
-  find: async (id) => {
-    const product = await Product.findById(id)
-    return product ? normalizeProduct(product) : null
+  getSearchTerms: async (attribute = 'description', limit = 50) => {
+    const products = await Product.find({})
+      .select(attribute)
+      .limit(limit)
+    return products ? products.map((p) => {
+      return { id: p._id.toString(), term: p[attribute] }
+    }) : null
+  },
+
+  search: async (searchTerm, limit = 25, page = 0) => {
+    page = Math.max(0, page)
+    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } })
+      .select('description price images')
+      .limit(limit)
+      .skip(limit * page)
+    return matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
   },
 
   delete: async (id) => {
@@ -82,15 +115,11 @@ module.exports = {
     return await Product.deleteMany({})
   },
 
-  saveAll: async (products) => {
-    return await Product.insertMany(products)
-  },
-
   save: async (data) => {
     const product = new Product({
       categories: data.categories || [],
       type: data.type || 'other',
-      name: data.name || '',
+      number: data.number || '',
       description: data.description || '',
       materials: data.materials || [],
       colors: data.colors || [],
@@ -100,11 +129,15 @@ module.exports = {
     return newProduct ? normalizeProduct(newProduct) : null
   },
 
+  saveAll: async (products) => {
+    return await Product.insertMany(products)
+  },
+
   update: async (id, data) => {    
     const newData = {
       categories: data.categories || [],
       type: data.type || '',
-      name: data.name || '',
+      number: data.number || '',
       description: data.description || '',
       materials: data.materials || [],
       colors: data.colors || [],

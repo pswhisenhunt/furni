@@ -10,11 +10,6 @@ const colorSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  },
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'productSchema',
-    required: false
   }
 })
 
@@ -40,8 +35,7 @@ module.exports = {
   save: async (data) => {
     const color = new Color({
       name: data.name || '',
-      value: data.value || '',
-      productId: data.productId
+      value: data.value || ''
     })
     const newColor = await color.save()
     return newColor ? normalizeColor(newColor) : null
@@ -49,13 +43,15 @@ module.exports = {
   update: async (id, data) => {
     const newData = {
       name: data.name || '',
-      value: data.value || '',
-      productId: data.productId
+      value: data.value || ''
     }
     const updatedColor = await Color.findByIdAndUpdate(id, newData, { new: true, runValidators: true, context: 'query' })
     return updatedColor ? normalizeColor(updatedColor) : null
   },
   delete: async (id) => {
     return await Color.findByIdAndRemove(id)
+  },
+  deleteAll: async () => {
+    return await Color.deleteMany({})
   }
 }
