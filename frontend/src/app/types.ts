@@ -12,11 +12,6 @@ export type Product = {
   images: string[]
 }
 
-export type SearchTerm = {
-  id: string,
-  term: string
-}
-
 export type Category = {
   id: string,
   name: string

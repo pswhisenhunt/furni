@@ -1,39 +1,46 @@
 import { PayloadAction, createSlice, createAsyncThunk, isAnyOf } from "@reduxjs/toolkit"
 import { post } from '../../../api'
-import { PRODUCT_SEARCH_TERMS_URL } from "../../../api/constants"
-import { SearchTerm, Status } from "../../../app/types"
+import { FETCH_SUGGESTIONS_URL } from "../../../api/constants"
+import { Status } from "../../../app/types"
 
 interface SearchBoxState {
-  suggestedSearchTerms: SearchTerm[],
+  suggestions: string[]
+  query: string,
   status: Status
 }
 
 const initialState: SearchBoxState = {
-  suggestedSearchTerms: [],
+  suggestions: [],
+  query: '',
   status: 'pending'
 }
 
-export const fetchsuggestedSearchTerms = createAsyncThunk('searchTerms/fetch', async (attribute: string) => {
-  return await post(PRODUCT_SEARCH_TERMS_URL, { attribute: attribute, limit: 100 })
+export const fetchSuggestions = createAsyncThunk('search/fetchSuggestions', async (searchTerm: string) => {
+  return await post(`${FETCH_SUGGESTIONS_URL}?search=${searchTerm}`)
 })
 
 const searchBoxSlice = createSlice({
   name: 'searchBox',
   initialState,
-  reducers: {},
+  reducers: {
+    setQuery(state: SearchBoxState, action: PayloadAction<string>) {
+      state.query = action.payload
+    }
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchsuggestedSearchTerms.pending, (state: SearchBoxState) => {
+    builder.addCase(fetchSuggestions.pending, (state: SearchBoxState) => {
       state.status = 'pending'
     }),
-    builder.addCase(fetchsuggestedSearchTerms.fulfilled, (state: SearchBoxState, action: PayloadAction<SearchTerm[]>) => {
+    builder.addCase(fetchSuggestions.fulfilled, (state: SearchBoxState, action: PayloadAction<string[]>) => {
       state.status = 'fulfilled'
-      state.suggestedSearchTerms = action.payload
+      state.suggestions = action.payload
     }),
-    builder.addCase(fetchsuggestedSearchTerms.rejected, (state: SearchBoxState) => {
+    builder.addCase(fetchSuggestions.rejected, (state: SearchBoxState) => {
       state.status = 'rejected'
     })
   }
 })
 
+export const { setQuery } = searchBoxSlice.actions
 
 export default searchBoxSlice.reducer

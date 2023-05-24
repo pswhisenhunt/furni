@@ -99,18 +99,13 @@ module.exports = {
     return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
-  getSearchTerms: async (attribute = 'description', limit = 50) => {
-    const products = await Product.find({})
-      .select(attribute)
-      .limit(limit)
-    return products ? products.map((p) => {
-      return { id: p._id.toString(), term: p[attribute] }
-    }) : null
+  getSuggestedProducts: async (searchTerm) => {
+    return await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } }).distinct('description')
   },
 
-  search: async (searchTerm, limit = 25, page = 0) => {
-    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } })
-      .select('description price images')
+  search: async (searchTerm, limit = 100, page = 0) => {
+    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' }, 'type': { $regex: searchTerm, $options: 'i' } })
+      .select('description price type images')
       .limit(limit)
       .skip(limit * page)
     return matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null

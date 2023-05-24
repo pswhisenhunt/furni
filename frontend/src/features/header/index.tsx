@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ title }): JSX.Element => {
       <h1 className='header-title'>
         <Link to='/' onClick={handleHomeLinkClick}>{title}</Link>
       </h1>
-      <SearchBox suggestedSearchAttribute='description'/>
+      <SearchBox/>
       <div className='header-icons'>
         <Icon image={`${BASE_IMAGE_URL}/user.svg`} link='/user' label='user' />
         <Icon image={`${BASE_IMAGE_URL}/likes.svg`} link='/user/likes' label='likes' />
