@@ -1,0 +1,13 @@
+.product-list-cards { 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3em;
+}
+
+.product-card {
+  list-style-type: none;
+}
+
+.product-card-images img {
+  width: 20em;
+}

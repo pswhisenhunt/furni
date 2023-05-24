@@ -3,29 +3,27 @@ import { Route, Routes } from 'react-router-dom'
 
 import Layout from './features/shared/layout'
 import Home from './features/home'
-import Bedroom from './features/bedroom'
-import Living from './features/living'
-import Dining from './features/dining'
-import Decor from './features/decor'
 import User from './features/user'
 import Likes from './features/likes'
 import Cart from './features/cart'
 import ProductList from './features/shared/productList'
 
 const App = () => {
+  /** Make a searchResults component to render instead of Product List */
   return (
     <div>
       <Layout>
         <Routes>
-          <Route path='/' Component={Home}/>
-          <Route path='/bedroom' Component={Bedroom}/>
-          <Route path='/living' Component={Living}/>
-          <Route path='/dining' Component={Dining}/>
-          <Route path='/decor' Component={Decor}/>
-          <Route path='/user' Component={User}/>
-          <Route path='/user/likes' Component={Likes}/>
-          <Route path='/cart' Component={Cart}/>
-          <Route path='/search' Component={ProductList}/>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/bedroom' element={<ProductList title='Bedroom'/>}/>
+          <Route path='/living' element={<ProductList title='Living Room'/>}/>
+          <Route path='/dining' element={<ProductList title='Dinning Room'/>}/>
+          <Route path='/decor' element={<ProductList title='Decorations'/>}/>
+          <Route path='/clearance' element={<ProductList title='Clearance'/>}/>
+          <Route path='/user' element={<User/>}/>
+          <Route path='/user/likes' element={<Likes/>}/>
+          <Route path='/cart' element={<Cart/>}/>
+          <Route path='/search' element={<ProductList title='results'/>}/>
         </Routes>
       </Layout>
     </div>

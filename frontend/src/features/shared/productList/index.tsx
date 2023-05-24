@@ -1,38 +1,46 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import { useSearchParams } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { Category } from '../../../app/types'
-import { fetchSearchResults, fetchProductsForCategory } from '../productList/productListSlice'
-import * as product from '../../../../../backend/models/product';
+import { useEffect } from 'react'
+import { useAppSelector, useAppDispatch } from '../../../app/hooks';
+import { fetchProductsForCategory } from './productListSlice';
+
+import ProductCard from './components/productCard';
 
 interface ProductListProps {
-  category?: Category
+  title: string
 }
 
-const ProductList: React.FC<ProductListProps> = ({ category }): JSX.Element => {
-  const products = useAppSelector(state => state.productListSlice.products)
-  const [ page, setPage ] = useState(0)
+const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const dispatch = useAppDispatch()
-  let [searchParams, setSearchParams] = useSearchParams();
-
+  const category = useAppSelector(state => state.navBarSlice.activeLink)
+  const products = useAppSelector(state => state.productListSlice.products)
+  const total = useAppSelector(state => state.productListSlice.total)
+  const limit = useAppSelector(state => state.productListSlice.limit)
+  const page = useAppSelector(state => state.productListSlice.page)
+  
   useEffect(() => {
-    const query = searchParams.get('query')
-    if (query) {
-      dispatch(fetchSearchResults(query))
-    } else {
-      dispatch(fetchProductsForCategory(({ category, page: page })))
-    }
-  }, [ page ])
+    dispatch(fetchProductsForCategory({
+      category: category,
+      limit: limit,
+      page: page
+    }))
+  }, [ page, limit, category ])
   
   return (
-    <ul>
-      {products.map(product => <li key={product.id}>{product.description}</li>)}
-      { page > 0 &&
-        <button onClick={() => setPage(page - 1) }>get previous page</button>
-      }
-      <button onClick={() => setPage(page + 1) }>get next page</button>
-    </ul>
+    <div className='product-list'>
+      <div className='product-list-header'>
+        <div className='product-list-header__title'>
+          <h1>{title}</h1>
+          <h4 className='product-list-header__title-subtitle'>
+            Showing {limit} of {total} products
+          </h4>
+        </div>
+      </div>
+      <ul className='product-list-cards'>
+        { products.map((p) => {
+          return <ProductCard key={p.id} product={p}/>
+        })}
+      </ul>
+    </div>
   )
 }
 

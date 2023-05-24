@@ -12,6 +12,7 @@ module.exports  = {
   devServer: {
     static: './build',
     hot: false,
+    port: 8080
   },
   module: {
     rules: [

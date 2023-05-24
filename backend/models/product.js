@@ -89,14 +89,19 @@ module.exports = {
     return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
-  findByCategory: async (categoryId, page) => {
-    const MAX_PRODUCTS = 15
-    const products = await Product.find({ categories: { $in: [categoryId] } })
+  findByCategory: async (categoryId, limit = 24, page) => {
+    const query = { categories: { $in: [categoryId] } }
+    const count = await Product.find(query).count()
+    const products = await Product.find(query)
       .select('description price images')
       .populate({ path: 'categories', select: 'name'})
-      .limit(MAX_PRODUCTS)
-      .skip(MAX_PRODUCTS * page)
-    return products ? products.map((p) => normalizeProduct(p)) : null
+      .limit(limit)
+      .skip(limit * page)
+    
+    return {
+      count: count,
+      products: products ? products.map((p) => normalizeProduct(p)) : null
+    }
   },
 
   getSuggestedProducts: async (searchTerm) => {
@@ -104,11 +109,14 @@ module.exports = {
   },
 
   search: async (searchTerm, limit = 100, page = 0) => {
-    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' }, 'type': { $regex: searchTerm, $options: 'i' } })
-      .select('description price type images')
-      .limit(limit)
-      .skip(limit * page)
-    return matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
+    const matchingProductsQuery = {'description': { $regex: searchTerm, $options: 'i' }}
+    const count = await Product.find(matchingProductsQuery).count()
+    const matchingProducts = await Product.find(matchingProductsQuery).select('description price type images').limit(limit).skip(limit * page)
+    
+    return {
+      count: count,
+      products: matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
+    }
   },
 
   delete: async (id) => {
