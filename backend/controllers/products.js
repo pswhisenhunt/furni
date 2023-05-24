@@ -41,11 +41,10 @@ productsRouter.post('/', async (request, response, next) => {
   }
 })
 
-productsRouter.post('/searchTerms', async (request, response, next) => {
+productsRouter.post('/suggestions', async (request, response, next) => {
   try {
-    const attribute = request.body.attribute
-    const limit = Math.min(request.body.limit, 100)
-    const products = await Product.getSearchTerms(attribute, limit)
+    const searchTerm = request.query.search
+    const products = await Product.getSuggestedProducts(searchTerm)
     response.json(products)
   } catch(exception) {
     next(exception)

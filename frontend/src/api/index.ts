@@ -9,7 +9,7 @@ export const get = async (url: string) => {
   }
 }
 
-export const post = async (url: string, data: object) => {
+export const post = async (url: string, data: object = {}) => {
   try {
     const response = await axios.post(url, data)
     return response.data
