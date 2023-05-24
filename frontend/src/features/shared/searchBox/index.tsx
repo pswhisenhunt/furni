@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { fetchSuggestions } from './searchBoxSlice'
+import { fetchSuggestions, setQuery } from './searchBoxSlice'
 import { BASE_IMAGE_URL } from '../../../api/constants'
 import { debounce } from '../../../app/utils';
 
@@ -11,11 +11,12 @@ const SearchBox: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const selectedSuggestionContainer = useRef(null)
   const suggestions = useAppSelector(state => state.searchBoxSlice.suggestions)
-  const [ query, setQuery ] = useState('')
+  const query = useAppSelector(state => state.searchBoxSlice.query)
   const [ focusedIndex, setFocusedIndex ] = useState<number>(-1)
 
   useEffect(() => {
     debouncedFetch()
+    return () => debouncedFetch.cancel()
   },[ query ])
 
   const debouncedFetch = useMemo(() => debounce(() => {
@@ -26,9 +27,9 @@ const SearchBox: React.FC = (): JSX.Element => {
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (value) {
-      setQuery(value)
+      dispatch(setQuery(value))
     } else {
-      setQuery('')
+      dispatch(setQuery(''))
     }
   }
 
@@ -59,7 +60,7 @@ const SearchBox: React.FC = (): JSX.Element => {
     const searchParams = new URLSearchParams();
     searchParams.append('query', termToUse.trim());
     navigate(`/search?${searchParams.toString()}`);
-    setQuery('')
+    dispatch(setQuery(''))
     setFocusedIndex(-1)
   }
 

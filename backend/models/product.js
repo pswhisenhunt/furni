@@ -104,8 +104,8 @@ module.exports = {
   },
 
   search: async (searchTerm, limit = 100, page = 0) => {
-    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } })
-      .select('description price images')
+    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' }, 'type': { $regex: searchTerm, $options: 'i' } })
+      .select('description price type images')
       .limit(limit)
       .skip(limit * page)
     return matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
