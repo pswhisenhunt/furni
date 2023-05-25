@@ -5,15 +5,13 @@ const webpack = require('webpack')
 module.exports  = {
   mode: 'development',
   entry: [
-    'webpack/hot/dev-server.js',
-    'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+    'webpack-hot-middleware/client',
     './frontend/index.tsx',
   ],
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, '/build'),
-    filename: 'bundle.js',
-    clean: true
+    filename: 'bundle.js'
   },
   module: {
     rules: [

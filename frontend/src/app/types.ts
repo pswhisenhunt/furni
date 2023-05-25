@@ -12,7 +12,7 @@ export type Product = {
   images: string[],
   averageRating: number
 }
-console.log('butt')
+
 export type Category = {
   id: string,
   name: string

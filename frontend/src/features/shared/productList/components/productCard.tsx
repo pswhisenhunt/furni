@@ -4,6 +4,7 @@ import { BASE_IMAGE_URL } from '../../../../api/constants'
 import { Product } from '../../../../app/types'
 
 import AddToCartButton from '../../addToCartButton'
+import Rating from '../../rating'
 
 interface ProductCardProps {
   product: Product
@@ -29,7 +30,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
       <div className='product-card-details'>
         <p className='product-card-details__description'>{product.description}</p>
         <p className='product-card-details__price'>{`$${product.price}`}</p>
-        <p className='product-card-details__price'>{product.averageRating}</p>
+        <p className='product-card-details__rating'>
+          <Rating value={product.averageRating}/>
+        </p>
       </div>
       <AddToCartButton classes={['small-button']}/>
     </li> 

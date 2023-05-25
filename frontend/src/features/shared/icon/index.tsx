@@ -5,12 +5,15 @@ interface IconProps {
   image: string,
   label?: string,
   link?: string,
+  classes?: string[]
 }
 
-const Icon: React.FC<IconProps> = ({ image, label, link }): JSX.Element => {
+const Icon: React.FC<IconProps> = ({ image, label, link, classes = []}): JSX.Element => {
+  let classNames = ['icon--img']
+  classNames = classes.length > 0 ? [...classNames, ...classes] : classNames
   return (
     <Link to={link} className='icon'>
-      <img src={image} alt={label} className='icon--img'/>
+      <img src={image} alt={label} className={classes.join(' ')}/>
     </Link>
   )
 }
