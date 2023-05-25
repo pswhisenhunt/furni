@@ -24,7 +24,7 @@ const App = () => {
           <Route path='/user/likes' element={<Likes/>}/>
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/search' element={<ProductList title='results'/>}/>
-        </Routes>
+          </Routes>
       </Layout>
     </div>
   )

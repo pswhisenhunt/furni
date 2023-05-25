@@ -1,18 +1,19 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports  = {
   mode: 'development',
-  entry: './frontend/index.tsx',
+  entry: [
+    'webpack/hot/dev-server.js',
+    'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+    './frontend/index.tsx',
+  ],
   devtool: 'inline-source-map',
   output: {
-    path: path.join(__dirname, '/build'),
-    filename: 'bundle.js'
-  },
-  devServer: {
-    static: './build',
-    hot: false,
-    port: 8080
+    path: path.resolve(__dirname, '/build'),
+    filename: 'bundle.js',
+    clean: true
   },
   module: {
     rules: [
@@ -37,11 +38,15 @@ module.exports  = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js']
+    extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    alias: {
+      scss: path.resolve(__dirname, 'frontend/src/styles')
+    }
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: 'public/index.html'
+      title: 'Hot Module Replacement',
     })
   ]
 }
