@@ -48,7 +48,11 @@ const productSchema = new mongoose.Schema({
   },
   images: [{
     type: String
-  }]
+  }],
+  averageRating: {
+    type: Number,
+    required: false
+  }
 })
 
 const normalizeProduct = (product) => {
@@ -67,7 +71,8 @@ const normalizeProduct = (product) => {
       return { id: p._id.toString(), name: p.name, value: p.value }
     }),
     price: product.price,
-    images: product.images
+    images: product.images,
+    averageRating: product.averageRating
   }
 }
 
@@ -93,7 +98,7 @@ module.exports = {
     const query = { categories: { $in: [categoryId] } }
     const count = await Product.find(query).count()
     const products = await Product.find(query)
-      .select('description price images')
+      .select('description price images averageRating')
       .populate({ path: 'categories', select: 'name'})
       .limit(limit)
       .skip(limit * page)
@@ -136,6 +141,8 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      // averageRating will be a calculated value when I implement the reviews model
+      averageRating: data.averageRating || 0
     })
     const newProduct = await product.save()
     return newProduct ? normalizeProduct(newProduct) : null
@@ -154,6 +161,8 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      // averageRating will be a calculated value when I implement the reviews model
+      averageRating: data.averageRating || 0
     }
     const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query' })
     return updatedProduct ? normalizeProduct(updatedProduct) : null

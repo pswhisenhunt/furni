@@ -9,7 +9,8 @@ export type Product = {
   categories: string[],
   colors: string[],
   price: number,
-  images: string[]
+  images: string[],
+  averageRating: number
 }
 
 export type Category = {

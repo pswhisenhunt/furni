@@ -46,7 +46,7 @@ app.use('/api/orders', ordersRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
-app.get('*', (request, response) => {
+app.get('/', (request, response) => {
   response.sendFile(HTML_FILE, function(err) {
     if (err) {
       response.status(500).send(err)

@@ -15,7 +15,8 @@ const initialState: ProductState = {
     colors: [],
     number: '',
     type: '',
-    images: []
+    images: [],
+    averageRating: 0
   }
 }
 

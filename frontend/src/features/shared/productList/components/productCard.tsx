@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { BASE_IMAGE_URL } from '../../../../api/constants'
 import { Product } from '../../../../app/types'
 
@@ -29,7 +28,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
       </div>
       <div className='product-card-details'>
         <p className='product-card-details__description'>{product.description}</p>
-        <p className='product-card-details__price'>{`$${ (Math.round(product.price)/100).toFixed(2) }`}</p>
+        <p className='product-card-details__price'>{`$${product.price}`}</p>
+        <p className='product-card-details__price'>{product.averageRating}</p>
       </div>
       <AddToCartButton classes={['small-button']}/>
     </li> 
