@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { BASE_IMAGE_URL } from '../../../../api/constants'
 import { Product } from '../../../../app/types'
 
@@ -15,6 +15,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
     `${BASE_IMAGE_URL}/placeholder_2.svg`,
   ]
   const [ currentIndex, setCurrentIndex ] = useState(0)
+  const memoizedRatings = useMemo(() => <Rating value={product.averageRating} productId={product.id}/>, [product.averageRating])
+  const memoizedAddToCart = useMemo(() => <AddToCartButton classes={['small-button']} id={product.id}/>, [ product.id ])
   
   return (
     <li className='product-card'>
@@ -28,13 +30,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }): JSX.Element => {
         />
       </div>
       <div className='product-card-details'>
-        <p className='product-card-details__description'>{product.description}</p>
-        <p className='product-card-details__price'>{`$${product.price}`}</p>
-        <p className='product-card-details__rating'>
-          <Rating value={product.averageRating}/>
-        </p>
+        <ul className='product-card-details-list'>
+          <li className='product-card-details__description'>{product.description}</li>
+          <li className='product-card-details__price'>{`$${(product.price).toFixed(2)}`}</li>
+        </ul>
+        {memoizedRatings}
       </div>
-      <AddToCartButton classes={['small-button']}/>
+      {memoizedAddToCart}
     </li> 
   )
 }

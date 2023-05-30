@@ -1,9 +1,11 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import { useAppSelector, useAppDispatch } from '../../../app/hooks';
-import { fetchProductsForCategory } from './productListSlice';
+import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+import { fetchProductsForCategory, setLimit, setSortBy, setPage } from './productListSlice'
 
-import ProductCard from './components/productCard';
+import ProductCard from './components/productCard'
+import FilterPanel from './components/filterPanel'
+import Select from '../select'
 
 interface ProductListProps {
   title: string
@@ -15,15 +17,31 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const products = useAppSelector(state => state.productListSlice.products)
   const total = useAppSelector(state => state.productListSlice.total)
   const limit = useAppSelector(state => state.productListSlice.limit)
+  const sortBy = useAppSelector(state => state.productListSlice.sortBy)
   const page = useAppSelector(state => state.productListSlice.page)
+  const status = useAppSelector(state => state.productListSlice.status)
+
+  const handleSelectViewPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setLimit(e.target.value))
+  }
   
+  const handleSelectSortBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setSortBy(e.target.value))
+  }
+
+  const handleLoadMoreClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    dispatch(setPage(page + 1))
+  }
+
   useEffect(() => {
     dispatch(fetchProductsForCategory({
       category: category,
       limit: limit,
-      page: page
+      page: page,
+      sortBy: sortBy,
     }))
-  }, [ page, limit, category ])
+  }, [ page, limit, category, sortBy ])
   
   return (
     <div className='product-list'>
@@ -31,15 +49,46 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
         <div className='product-list-header__title'>
           <h1>{title}</h1>
           <h4 className='product-list-header__title-subtitle'>
-            Showing {limit} of {total} products
+            { limit < total ?
+              <>Showing {limit} of {total} products</>
+              : <>Showing all {total} products</>
+            }
           </h4>
         </div>
+        <div className='dropdown-container'>
+            <Select 
+              label='View'
+              name='view'
+              defaultValue={limit}
+              options={[
+                {key: '1__10', value: 10, displayText: '10 Per Page'},
+                {key: '2__24', value: 24, displayText: '24 Per Page'},
+                {key: '3__48', value: 48, displayText: '48 Per Page'}
+              ]}
+              onChange={handleSelectViewPerPage}
+            />
+            <Select
+              label='Sort'
+              name='sort'
+              defaultValue={sortBy.field}
+              options={[
+                {key: '1__highest_rated', value: 'averageRating_-1', displayText: 'Highest Rated'},
+                {key: '2__high_to_low', value: 'price_-1', displayText: 'High to Low'},
+                {key: '3__low_to_high', value: 'price_1', displayText: 'Low to High'},
+              ]}
+              onChange={handleSelectSortBy}
+            />
+        </div>
       </div>
+      <FilterPanel/>
       <ul className='product-list-cards'>
         { products.map((p) => {
           return <ProductCard key={p.id} product={p}/>
         })}
       </ul>
+      { products.length < total ?
+        (<button className='pagination-button' onClick={(e) => handleLoadMoreClick(e)}>Load More</button>) : <></>
+      }
     </div>
   )
 }

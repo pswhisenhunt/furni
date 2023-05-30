@@ -94,15 +94,24 @@ module.exports = {
     return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
-  findByCategory: async (categoryId, limit = 24, page) => {
+  findByCategory: async (categoryId, limit = 24, page, sort) => {
     const query = { categories: { $in: [categoryId] } }
     const count = await Product.find(query).count()
-    const products = await Product.find(query)
-      .select('description price images averageRating')
-      .populate({ path: 'categories', select: 'name'})
-      .limit(limit)
-      .skip(limit * page)
-    
+    let products
+    if (sort) {
+      products = await Product.find(query)
+        .select('description price images averageRating')
+        .populate({ path: 'categories', select: 'name'})
+        .sort(sort)
+        .limit(limit)
+        .skip(limit * page)
+    } else {
+      products = await Product.find(query)
+        .select('description price images averageRating')
+        .populate({ path: 'categories', select: 'name'})
+        .limit(limit)
+        .skip(limit * page)
+    }  
     return {
       count: count,
       products: products ? products.map((p) => normalizeProduct(p)) : null

@@ -6,11 +6,6 @@ const cors = require('cors')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-const webpack = require('webpack')
-const webpackConfig = require('../webpack.config')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-var compiler = webpack(webpackConfig)
 
 const productsRouter = require('./controllers/products')
 const usersRouter = require('./controllers/users')
@@ -45,20 +40,11 @@ app.use('/api/colors', colorsRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/orders', ordersRouter)
 
-app.use(webpackDevMiddleware(compiler))
-
-app.use(webpackHotMiddleware(compiler, {
-  reload: true,
-  quite: true,
-  path: '/__webpack_hmr'
-}))
-
 app.use('/api/*', (request, response) => {
   response.status(404).send({ error: 'unknown endpoint'})
 })
 
 app.get('*', (request, response) => {
-  response.setHeader('Content-Type', 'application/json')  
   response.sendFile(path.join(__dirname, '..', 'build', 'index.html'))
 })
 

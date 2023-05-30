@@ -13,7 +13,7 @@ const Icon: React.FC<IconProps> = ({ image, label, link, classes = []}): JSX.Ele
   classNames = classes.length > 0 ? [...classNames, ...classes] : classNames
   return (
     <Link to={link} className='icon'>
-      <img src={image} alt={label} className={classes.join(' ')}/>
+      <img src={image} alt={label} className={classNames.join(' ')}/>
     </Link>
   )
 }

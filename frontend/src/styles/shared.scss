@@ -3,8 +3,9 @@
   margin: 0.5em;
 }
 
-.filled-in-star {
-  fill: var(--dark-grey);
+.star-icon {
+  height: 1.2em;
+  margin: 0.1em;
 }
 
 .image-link-label {
@@ -24,4 +25,28 @@
   &:hover, :focus, :active {
     transform: scale(1.1) rotate(4deg);
   }
+}
+
+.add-to-cart-button {
+  padding: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--light-blue-grey);
+  color: var(--dark-grey);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--dark-blue-grey);
+  }
+}
+
+.select-label {
+  font-size: var(--small-font-size);
+}
+
+.select {
+  margin-left: 0.5em;
+  padding: 0.2em;
+  border: 1px solid var(--light-grey);
+  border-radius: 5px;
+  color: var(--dark-grey);
 }

@@ -1,14 +1,13 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
 
 module.exports  = {
   mode: 'development',
-  entry: [
-    'webpack-hot-middleware/client',
-    './frontend/index.tsx',
-  ],
+  entry: './frontend/index.tsx',
   devtool: 'inline-source-map',
+  devServer: {
+    hot: false,
+    port: 8080
+  },
   output: {
     path: path.resolve(__dirname, '/build'),
     filename: 'bundle.js'
@@ -36,15 +35,6 @@ module.exports  = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js'],
-    alias: {
-      scss: path.resolve(__dirname, 'frontend/src/styles')
-    }
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      title: 'Hot Module Replacement',
-    })
-  ]
+    extensions: ['.tsx', '.ts', '.jsx', '.js']
+  }
 }

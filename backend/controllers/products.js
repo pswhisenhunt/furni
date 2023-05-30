@@ -26,8 +26,14 @@ productsRouter.get('/:id', async (request, response, next) => {
 productsRouter.post('/categories/:categoryId', async (request, response, next) => {
   try {
     const limit = Math.min(request.body.limit, 50)
-    const page = Math.min(0, request.body.page)
-    const products = await Product.findByCategory(request.params.categoryId, limit, page)
+    const page = Math.max(0, request.body.page)
+    let sort = request.body.sort
+    if (sort) {
+      sort = {
+        [sort.field]: sort.direction
+      }
+    }
+    const products = await Product.findByCategory(request.params.categoryId, limit, page, sort)
     response.json(products)
   } catch(exception) {
     next(exception)
