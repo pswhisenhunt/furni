@@ -7,6 +7,8 @@ import User from './features/user'
 import Likes from './features/likes'
 import Cart from './features/cart'
 import ProductList from './features/shared/productList'
+import ProductPage from './features/shared/productPage'
+import Login from './features/login'
 
 const App = () => {
   /** Make a searchResults component to render instead of Product List */
@@ -24,7 +26,9 @@ const App = () => {
           <Route path='/user/likes' element={<Likes/>}/>
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/search' element={<ProductList title='results'/>}/>
-          </Routes>
+          <Route path='/product/:id' element={<ProductPage/>}/>
+          <Route path='/login' element={<Login/>}/>
+        </Routes>
       </Layout>
     </div>
   )

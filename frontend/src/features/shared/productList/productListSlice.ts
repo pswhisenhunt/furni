@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk, current } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { Category, Product, Status } from '../../../app/types'
 import { post } from '../../../api'
 import { SEARCH_PRODUCTS_URL, FETCH_PRODUCTS_BY_CATEGORY_URL } from '../../../api/constants'
@@ -58,6 +58,9 @@ const productListSlice = createSlice({
     },
     setPage(state: ProductListState, action: PayloadAction<number>) {
       state.page = action.payload
+    },
+    resetProductListState(state: ProductListState) {
+      state = {...initialState}
     }
   },
   extraReducers: (builder) => {
@@ -77,7 +80,7 @@ const productListSlice = createSlice({
     }),
     builder.addCase(fetchProductsForCategory.fulfilled, (state: ProductListState, action: PayloadAction<{products: Product[], count: number}>) => {
       state.status = 'fulfilled'
-      state.products = [...state.products, ...action.payload.products]
+      state.products = action.payload.products
       state.total = action.payload.count
     }),
     builder.addCase(fetchProductsForCategory.rejected, (state: ProductListState) => {
@@ -86,6 +89,6 @@ const productListSlice = createSlice({
   }
 })
 
-export const { setLimit, setSortBy, setPage } = productListSlice.actions
+export const { setLimit, setSortBy, setPage, resetProductListState } = productListSlice.actions
 
 export default productListSlice.reducer

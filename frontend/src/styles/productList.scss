@@ -76,17 +76,3 @@
   border: 1px solid var(--light-grey);
   border-radius: 5px;
 }
-
-.pagination-button {
-  margin: 4em 42%;
-  width: 300px;
-  height: 50px;
-  padding: 1em;
-  border: 1px solid var(--light-grey);
-  color: var(--dark-grey);
-  cursor: pointer;
-  &:hover {
-    border: 1px solid var(--dark-grey);
-    background-color: transparent;
-  }
-}

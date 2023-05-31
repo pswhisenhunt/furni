@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { fetchProductsForCategory, setLimit, setSortBy, setPage } from './productListSlice'
+import { fetchProductsForCategory, setLimit, setSortBy, setPage, resetProductListState } from './productListSlice'
 
 import ProductCard from './components/productCard'
-import FilterPanel from './components/filterPanel'
+import FilterPanel from '../filterPanel'
 import Select from '../select'
+import Paginator from '../paginator'
 
 interface ProductListProps {
   title: string
@@ -29,9 +30,9 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
     dispatch(setSortBy(e.target.value))
   }
 
-  const handleLoadMoreClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePagination = (e: React.MouseEvent<HTMLButtonElement>, newPage: number) => {
     e.preventDefault()
-    dispatch(setPage(page + 1))
+    dispatch(setPage(newPage))
   }
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
       sortBy: sortBy,
     }))
   }, [ page, limit, category, sortBy ])
-  
+
   return (
     <div className='product-list'>
       <div className='product-list-header'>
@@ -80,15 +81,18 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
             />
         </div>
       </div>
-      <FilterPanel/>
+      <FilterPanel isOpen={false}/>
       <ul className='product-list-cards'>
         { products.map((p) => {
           return <ProductCard key={p.id} product={p}/>
         })}
       </ul>
-      { products.length < total ?
-        (<button className='pagination-button' onClick={(e) => handleLoadMoreClick(e)}>Load More</button>) : <></>
-      }
+      <Paginator 
+        total={total}
+        perPage={limit}
+        currentPage={page}
+        onClick={handlePagination}
+      />
     </div>
   )
 }
