@@ -1,3 +1,4 @@
+/* ICONS AND LINKS */
 .icon--img {
   height: 2.5em;
   margin: 0.5em;
@@ -17,6 +18,7 @@
   color: var(--medium-grey);
 }
 
+/* ANIMATIONS */
 .grow-rotate-on-hover {
   transform: perspective(1px) translateZ(0);
   transition-duration: 0.3s;
@@ -27,6 +29,7 @@
   }
 }
 
+/* FORM ELEMENTS */
 .add-to-cart-button {
   padding: 0.5em;
   border: none;

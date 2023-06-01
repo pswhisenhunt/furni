@@ -58,9 +58,6 @@ const productListSlice = createSlice({
     },
     setPage(state: ProductListState, action: PayloadAction<number>) {
       state.page = action.payload
-    },
-    resetProductListState(state: ProductListState) {
-      state = {...initialState}
     }
   },
   extraReducers: (builder) => {
@@ -89,6 +86,6 @@ const productListSlice = createSlice({
   }
 })
 
-export const { setLimit, setSortBy, setPage, resetProductListState } = productListSlice.actions
+export const { setLimit, setSortBy, setPage } = productListSlice.actions
 
 export default productListSlice.reducer

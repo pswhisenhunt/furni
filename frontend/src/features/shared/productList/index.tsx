@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import { fetchProductsForCategory, setLimit, setSortBy, setPage, resetProductListState } from './productListSlice'
+import { fetchProductsForCategory, setLimit, setSortBy, setPage } from './productListSlice'
 
 import ProductCard from './components/productCard'
 import FilterPanel from '../filterPanel'
@@ -35,6 +35,8 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
     dispatch(setPage(newPage))
   }
 
+  const memoizedFilterPanel = useMemo(() => <FilterPanel isOpen={false}/>, [])
+  
   useEffect(() => {
     dispatch(fetchProductsForCategory({
       category: category,
@@ -81,7 +83,7 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
             />
         </div>
       </div>
-      <FilterPanel isOpen={false}/>
+      { memoizedFilterPanel }
       <ul className='product-list-cards'>
         { products.map((p) => {
           return <ProductCard key={p.id} product={p}/>
