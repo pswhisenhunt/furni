@@ -118,6 +118,10 @@ module.exports = {
     }
   },
 
+  getAttribute: async (attribute) => {
+    return await Product.distinct(attribute)
+  },
+
   getSuggestedProducts: async (searchTerm) => {
     return await Product.find({ 'description': { $regex: searchTerm, $options: 'i' } }).distinct('description')
   },

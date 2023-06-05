@@ -59,6 +59,16 @@ productsRouter.post('/suggestions', async (request, response, next) => {
   }
 })
 
+productsRouter.post('/attribute', async (request, response, next) => {
+  try {
+    const attribute = request.body.attribute
+    const attributeValues = await Product.getAttribute(attribute)
+    response.json(attributeValues)
+  } catch (exception) {
+    next(exception)
+  }
+})
+
 productsRouter.post('/search', async (request, response, next) => {
   try {
     const searchTerm = request.body.searchTerm

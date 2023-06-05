@@ -21,6 +21,8 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const sortBy = useAppSelector(state => state.productListSlice.sortBy)
   const page = useAppSelector(state => state.productListSlice.page)
   const status = useAppSelector(state => state.productListSlice.status)
+  
+  const memoizedFilterPanel = useMemo(() => <FilterPanel/>, [])
 
   const handleSelectViewPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setLimit(e.target.value))
@@ -34,8 +36,6 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
     e.preventDefault()
     dispatch(setPage(newPage))
   }
-
-  const memoizedFilterPanel = useMemo(() => <FilterPanel isOpen={false}/>, [])
   
   useEffect(() => {
     dispatch(fetchProductsForCategory({
@@ -83,7 +83,9 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
             />
         </div>
       </div>
+      
       { memoizedFilterPanel }
+
       <ul className='product-list-cards'>
         { products.map((p) => {
           return <ProductCard key={p.id} product={p}/>
