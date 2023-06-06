@@ -23,8 +23,8 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const status = useAppSelector(state => state.productListSlice.status)
 
   /** Product Filters  */
-  const selectedMaterialIds = useAppSelector(state => state.filterPanelSlice.selectedMaterialIds)
-  const selectedColorIds = useAppSelector(state => state.filterPanelSlice.selectedColorIds)
+  const selectedMaterials = useAppSelector(state => state.filterPanelSlice.selectedMaterials)
+  const selectedColors = useAppSelector(state => state.filterPanelSlice.selectedColors)
   const selectedProductTypes = useAppSelector(state => state.filterPanelSlice.selectedProductTypes)
 
   const memoizedFilterPanel = useMemo(() => <FilterPanel/>, [])
@@ -43,18 +43,20 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   }
   
   useEffect(() => {
+    const materialIds = selectedMaterials.map(m => m.id)
+    const colorsIds = selectedColors.map(c => c.id)
+    
     dispatch(fetchProductsForCategory({
       category: category,
       limit: limit,
       page: page,
       sortBy: sortBy,
-      materialIds: selectedMaterialIds,
-      colorIds: selectedColorIds,
+      materialIds: materialIds,
+      colorIds: colorsIds,
       productTypes: selectedProductTypes
     }))
-  }, [ page, limit, category, sortBy ])
+  }, [ page, limit, category, sortBy, selectedMaterials, selectedColors, selectedProductTypes ])
 
-  console.log(products)
   return (
     <div className='product-list'>
       <div className='product-list-header'>
@@ -67,6 +69,7 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
             }
           </h4>
         </div>
+
         <div className='dropdown-container'>
             <Select 
               label='View'

@@ -1,3 +1,8 @@
+.filter-panel {
+  display: flex;
+  gap: 2em;
+}
+
 .filter-button {
   border: 1px solid var(--light-grey);
   border-radius: 5px;
@@ -120,4 +125,21 @@
   &.submit {
     background-color: var(--light-blue-grey);
   }
+}
+
+.applied-filters {
+  display: flex;
+  gap: 0.5em;
+  align-self: center;
+}
+
+.applied-filters-button {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  color: var(--dark-grey);
+  background-color: var(--white-grey);
+  text-transform: capitalize;
+  cursor: pointer;
 }

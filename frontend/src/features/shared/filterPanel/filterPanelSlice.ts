@@ -8,8 +8,8 @@ interface FilterPanelProps {
   colors: Color[],
   productTypes: string[],
   status: Status,
-  selectedMaterialIds: string[],
-  selectedColorIds: string[],
+  selectedMaterials: Material[],
+  selectedColors: Color[],
   selectedProductTypes: string[]
 }
 
@@ -30,8 +30,8 @@ const initialState: FilterPanelProps = {
   colors: [],
   productTypes: [],
   status: 'pending',
-  selectedColorIds: [],
-  selectedMaterialIds: [],
+  selectedColors: [],
+  selectedMaterials: [],
   selectedProductTypes: [],
 }
 
@@ -39,28 +39,24 @@ const filterPanelSlice = createSlice({
   name: 'filterPanel',
   initialState,
   reducers: {
-    selectColor(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedColorIds.push(action.payload)
-    },
-    removeColor(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedColorIds = state.selectedColorIds.filter(colorId => colorId !== action.payload)
-    },
-    selectMaterial(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedMaterialIds.push(action.payload)
-    },
-    removeMaterial(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedMaterialIds = state.selectedMaterialIds.filter(materialId => materialId !== action.payload)
-    },
-    selectProductType(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedProductTypes.push(action.payload)
-    },
-    removeProductType(state: FilterPanelProps, action: PayloadAction<string>) {
-      state.selectedProductTypes = state.selectedProductTypes.filter(type => type !== action.payload)
+    saveFilterSelection(state: FilterPanelProps, action: PayloadAction<{ colors: Color[], materials: Material[], types: string[]}>) {
+      state.selectedMaterials = action.payload.materials,
+      state.selectedColors = action.payload.colors,
+      state.selectedProductTypes = action.payload.types
     },
     clearAllSelections(state: FilterPanelProps) {
-      state.selectedColorIds = []
-      state.selectedMaterialIds = []
+      state.selectedColors = []
+      state.selectedMaterials = []
       state.selectedProductTypes = []
+    },
+    removeSelectedMaterial(state: FilterPanelProps, action: PayloadAction<Material>) {
+      state.selectedMaterials = state.selectedMaterials.filter(m => m.id !== action.payload.id)
+    },
+    removeSelectedColor(state: FilterPanelProps, action: PayloadAction<Color>) {
+      state.selectedColors = state.selectedColors.filter(c => c.id !== action.payload.id)
+    },
+    removeSelectedProductType(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedProductTypes = state.selectedProductTypes.filter(t => t !== action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -97,14 +93,6 @@ const filterPanelSlice = createSlice({
   }
 })
 
-export const { 
-  selectColor,
-  removeColor,
-  selectMaterial,
-  removeMaterial,
-  selectProductType,
-  removeProductType,
-  clearAllSelections
-} = filterPanelSlice.actions
+export const { saveFilterSelection, clearAllSelections, removeSelectedColor, removeSelectedProductType, removeSelectedMaterial } = filterPanelSlice.actions
 
 export default filterPanelSlice.reducer
