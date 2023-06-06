@@ -27,7 +27,7 @@ productsRouter.post('/categories/:categoryId', async (request, response, next) =
   try {
     const limit = Math.min(request.body.limit, 50)
     const page = Math.max(0, request.body.page)
-    let sort = request.body.sort
+    let sort = request.body.sortBy
     if (sort) {
       sort = {
         [sort.field]: sort.direction

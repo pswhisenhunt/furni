@@ -109,12 +109,11 @@ module.exports = {
     }
     const count = await Product.find(query).count()
     let products
+    console.log(sort)
     if (sort) {
       products = await Product.find(query)
         .select('description price images averageRating type')
         .populate({ path: 'categories', select: 'name'})
-        .populate({ path: 'materials', select: 'name'})
-        .populate({ path: 'colors', select: 'name'})
         .sort(sort)
         .limit(limit)
         .skip(limit * page)
@@ -122,8 +121,6 @@ module.exports = {
       products = await Product.find(query)
         .select('description price images averageRating type')
         .populate({ path: 'categories', select: 'name'})
-        .populate({ path: 'materials', select: 'name'})
-        .populate({ path: 'colors', select: 'name'})
         .limit(limit)
         .skip(limit * page)
     }  
