@@ -137,6 +137,18 @@ module.exports = {
     }
   },
 
+  // filter: async (categoryId, materialIds, colorIds, productTypes) => {
+  //   const filteredProducts = await Product.find()
+  //     .select('description price images averageRating')
+  //     .populate({ path: 'categories', select: 'name'})
+  //   const count = await Product.find().count()
+    
+  //   return {
+  //     count: count,
+  //     products: filteredProducts ? filteredProducts.map(p => normalizeProduct(p)) : null
+  //   }
+  // },
+
   delete: async (id) => {
     return await Product.findByIdAndRemove(id)
   },

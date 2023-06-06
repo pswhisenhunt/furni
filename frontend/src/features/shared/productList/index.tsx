@@ -21,7 +21,6 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const sortBy = useAppSelector(state => state.productListSlice.sortBy)
   const page = useAppSelector(state => state.productListSlice.page)
   const status = useAppSelector(state => state.productListSlice.status)
-  
   const memoizedFilterPanel = useMemo(() => <FilterPanel/>, [])
 
   const handleSelectViewPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {

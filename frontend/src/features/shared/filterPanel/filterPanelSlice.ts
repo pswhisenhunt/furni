@@ -7,7 +7,10 @@ interface FilterPanelProps {
   materials: Material[],
   colors: Color[],
   productTypes: string[],
-  status: Status
+  status: Status,
+  selectedMaterialIds: string[],
+  selectedColorIds: string[],
+  selectedProductTypes: string[]
 }
 
 export const fetchMaterials = createAsyncThunk('materials/fetch', async () => {
@@ -26,13 +29,40 @@ const initialState: FilterPanelProps = {
   materials: [],
   colors: [],
   productTypes: [],
-  status: 'pending'
+  status: 'pending',
+  selectedColorIds: [],
+  selectedMaterialIds: [],
+  selectedProductTypes: [],
 }
 
 const filterPanelSlice = createSlice({
   name: 'filterPanel',
   initialState,
-  reducers: {},
+  reducers: {
+    selectColor(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedColorIds.push(action.payload)
+    },
+    removeColor(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedColorIds = state.selectedColorIds.filter(colorId => colorId !== action.payload)
+    },
+    selectMaterial(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedMaterialIds.push(action.payload)
+    },
+    removeMaterial(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedMaterialIds = state.selectedMaterialIds.filter(materialId => materialId !== action.payload)
+    },
+    selectProductType(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedProductTypes.push(action.payload)
+    },
+    removeProductType(state: FilterPanelProps, action: PayloadAction<string>) {
+      state.selectedProductTypes = state.selectedProductTypes.filter(type => type !== action.payload)
+    },
+    clearAllSelections(state: FilterPanelProps) {
+      state.selectedColorIds = []
+      state.selectedMaterialIds = []
+      state.selectedProductTypes = []
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchMaterials.pending, (state: FilterPanelProps) => {
       state.status = 'pending'
@@ -66,5 +96,15 @@ const filterPanelSlice = createSlice({
     })
   }
 })
+
+export const { 
+  selectColor,
+  removeColor,
+  selectMaterial,
+  removeMaterial,
+  selectProductType,
+  removeProductType,
+  clearAllSelections
+} = filterPanelSlice.actions
 
 export default filterPanelSlice.reducer

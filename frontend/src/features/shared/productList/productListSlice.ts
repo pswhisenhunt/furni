@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { Category, Product, Status } from '../../../app/types'
 import { post } from '../../../api'
 import { SEARCH_PRODUCTS_URL, FETCH_PRODUCTS_BY_CATEGORY_URL } from '../../../api/constants'
+import * as category from '../../../../../backend/models/category'
 
 interface ProductListState {
   products: Product[],
@@ -33,6 +34,14 @@ export const fetchSearchResults = createAsyncThunk('products/searchResults', asy
 
 export const fetchProductsForCategory = createAsyncThunk('products/fetchByCategory', async ({ category, limit, page, sortBy }: { category: Category, limit: number, page: number, sortBy: { field: string, direction: number}}) => {
   return await post(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${category.id}`, { limit: limit, page: page, sort: sortBy })
+})
+
+export const fetchFilteredProducts = createAsyncThunk('products/fetchFiltered', async ({ categoryId, materialIds, colorIds, productTypes }: { categoryId: string, materialIds: string[], colorIds: string[], productTypes: string[]}) => {
+  return await post(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${categoryId}`, {
+    materialIds: materialIds,
+    colorIds: colorIds,
+    productTypes: productTypes
+  })
 })
 
 const productListSlice = createSlice({

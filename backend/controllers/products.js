@@ -81,6 +81,19 @@ productsRouter.post('/search', async (request, response, next) => {
   }
 })
 
+productsRouter.post('/filter/:categoryId', async (request, response, next) => {
+  try { 
+    const categoryId = request.params.categoryId
+    const materialIds = request.body.materialIds
+    const colorsIds = request.body.colorsIds
+    const productTypes = request.body.productTypes
+    const filteredProducts = await Product.filter(categoryId, materialIds, colorsIds, productTypes)
+    response.json(filteredProducts)
+  } catch (exception) {
+    next(exception)
+  }
+})
+
 productsRouter.delete('/:id', (request, response, next) => {
   Product.delete(request.params.id)
     .then(() => {

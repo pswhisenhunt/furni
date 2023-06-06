@@ -8,13 +8,18 @@ interface CheckboxProps {
 
 const Checkbox: React.FC<CheckboxProps> = ({ name, isChecked, onChange }):JSX.Element => {
   return (
-    <input
-      type='checkbox'
-      name={name}
-      value={name}
-      checked={isChecked}
-      onChange={onChange}
-    />
+    <>
+      <input
+        id={name}
+        className='checkbox'
+        type='checkbox'
+        name={name}
+        value={name}
+        checked={isChecked}
+        onChange={onChange}
+      />
+      <label htmlFor={name} className='checkbox-label'>{name}</label>
+    </>
   )
 }
 
