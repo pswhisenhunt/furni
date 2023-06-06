@@ -48,7 +48,11 @@ const productSchema = new mongoose.Schema({
   },
   images: [{
     type: String
-  }]
+  }],
+  averageRating: {
+    type: Number,
+    required: false
+  }
 })
 
 const normalizeProduct = (product) => {
@@ -67,7 +71,8 @@ const normalizeProduct = (product) => {
       return { id: p._id.toString(), name: p.name, value: p.value }
     }),
     price: product.price,
-    images: product.images
+    images: product.images,
+    averageRating: product.averageRating
   }
 }
 
@@ -89,14 +94,47 @@ module.exports = {
     return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
-  findByCategory: async (categoryId, page) => {
-    const MAX_PRODUCTS = 15
-    const products = await Product.find({ categories: { $in: [categoryId] } })
-      .select('description price images')
-      .populate({ path: 'categories', select: 'name'})
-      .limit(MAX_PRODUCTS)
-      .skip(MAX_PRODUCTS * page)
-    return products ? products.map((p) => normalizeProduct(p)) : null
+  findByCategory: async (categoryId, limit = 24, page, sort, materialIds, colorIds, types) => {
+    const query = { categories: { $in: [ new mongoose.Types.ObjectId(categoryId)] } }
+    if (materialIds?.length > 0) {
+      materialIds = materialIds.map(id => new mongoose.Types.ObjectId(id))
+      query.materials = { $in: materialIds }
+    }
+    if (colorIds?.length > 0) {
+      colorIds = colorIds.map(id => new mongoose.Types.ObjectId(id))
+      query.colors = { $in: colorIds }
+    }
+    if (types?.length > 0) {
+      query.type = { $in: types }
+    }
+    const count = await Product.find(query).count()
+    let products
+    if (sort) {
+      products = await Product.find(query)
+        .select('description price images averageRating type')
+        .populate({ path: 'categories', select: 'name'})
+        .populate({ path: 'materials', select: 'name'})
+        .populate({ path: 'colors', select: 'name'})
+        .sort(sort)
+        .limit(limit)
+        .skip(limit * page)
+    } else {
+      products = await Product.find(query)
+        .select('description price images averageRating type')
+        .populate({ path: 'categories', select: 'name'})
+        .populate({ path: 'materials', select: 'name'})
+        .populate({ path: 'colors', select: 'name'})
+        .limit(limit)
+        .skip(limit * page)
+    }  
+    return {
+      count: count,
+      products: products ? products.map((p) => normalizeProduct(p)) : null
+    }
+  },
+
+  getAttribute: async (attribute) => {
+    return await Product.distinct(attribute)
   },
 
   getSuggestedProducts: async (searchTerm) => {
@@ -104,11 +142,14 @@ module.exports = {
   },
 
   search: async (searchTerm, limit = 100, page = 0) => {
-    const matchingProducts = await Product.find({ 'description': { $regex: searchTerm, $options: 'i' }, 'type': { $regex: searchTerm, $options: 'i' } })
-      .select('description price type images')
-      .limit(limit)
-      .skip(limit * page)
-    return matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
+    const matchingProductsQuery = {'description': { $regex: searchTerm, $options: 'i' }}
+    const count = await Product.find(matchingProductsQuery).count()
+    const matchingProducts = await Product.find(matchingProductsQuery).select('description price type images').limit(limit).skip(limit * page)
+    
+    return {
+      count: count,
+      products: matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
+    }
   },
 
   delete: async (id) => {
@@ -128,6 +169,8 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      // averageRating will be a calculated value when I implement the reviews model
+      averageRating: data.averageRating || 0
     })
     const newProduct = await product.save()
     return newProduct ? normalizeProduct(newProduct) : null
@@ -146,6 +189,8 @@ module.exports = {
       materials: data.materials || [],
       colors: data.colors || [],
       price: data.price || [],
+      // averageRating will be a calculated value when I implement the reviews model
+      averageRating: data.averageRating || 0
     }
     const updatedProduct = await Product.findByIdAndUpdate(id, newData, { new: true, runValidators: true, content: 'query' })
     return updatedProduct ? normalizeProduct(updatedProduct) : null

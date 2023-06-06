@@ -16,7 +16,7 @@ const NavBar: React.FC = (): JSX.Element => {
     if (loadingState === 'pending') {
       dispatch(fetchCategories())
     }
-  }, [links])
+  }, [ links ])
 
   const handleSetActiveLink = (link: Category) => {
     dispatch(setActiveLink(link))

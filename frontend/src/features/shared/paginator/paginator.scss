@@ -1,0 +1,41 @@
+.paginator {
+  display: flex;
+  margin: 3em 0;
+  justify-content: center;
+}
+
+.paginator-arrow {
+  border: 0;
+  background-size: 2em;
+  background-position: center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  width: 2em;
+  cursor: pointer;
+
+  &.right {
+    right: 0;
+    background-image: url('http://localhost:3001/images/right_arrow.svg');
+  }
+
+  &.left { 
+    left: 0;
+    background-image: url('http://localhost:3001/images/left_arrow.svg');
+  }
+
+  &.deactivate {
+    cursor: not-allowed;
+  }
+}
+
+.paginator-button {
+  border: none;
+  background: transparent;
+  padding: 1em;
+  color: var(--dark-grey);
+  cursor: pointer;
+  
+  &.active {
+    color: var(--dark-blue-grey);
+  }
+}

@@ -23,9 +23,20 @@ productsRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-productsRouter.get('/categories/:categoryId', async (request, response, next) => {
+productsRouter.post('/categories/:categoryId', async (request, response, next) => {
   try {
-    const products = await Product.findByCategory(request.params.categoryId, Number(request.query.page))
+    const limit = Math.min(request.body.limit, 50)
+    const page = Math.max(0, request.body.page)
+    let sort = request.body.sort
+    if (sort) {
+      sort = {
+        [sort.field]: sort.direction
+      }
+    }
+    const materialIds = request.body.materialIds
+    const colorsIds = request.body.colorsIds
+    const productTypes = request.body.productTypes
+    const products = await Product.findByCategory(request.params.categoryId, limit, page, sort, materialIds, colorsIds, productTypes)
     response.json(products)
   } catch(exception) {
     next(exception)
@@ -47,6 +58,16 @@ productsRouter.post('/suggestions', async (request, response, next) => {
     const products = await Product.getSuggestedProducts(searchTerm)
     response.json(products)
   } catch(exception) {
+    next(exception)
+  }
+})
+
+productsRouter.post('/attribute', async (request, response, next) => {
+  try {
+    const attribute = request.body.attribute
+    const attributeValues = await Product.getAttribute(attribute)
+    response.json(attributeValues)
+  } catch (exception) {
     next(exception)
   }
 })

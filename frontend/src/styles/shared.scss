@@ -1,6 +1,12 @@
+/* ICONS AND LINKS */
 .icon--img {
   height: 2.5em;
   margin: 0.5em;
+}
+
+.star-icon {
+  height: 1.2em;
+  margin: 0.1em;
 }
 
 .image-link-label {
@@ -12,6 +18,7 @@
   color: var(--medium-grey);
 }
 
+/* ANIMATIONS */
 .grow-rotate-on-hover {
   transform: perspective(1px) translateZ(0);
   transition-duration: 0.3s;
@@ -20,4 +27,52 @@
   &:hover, :focus, :active {
     transform: scale(1.1) rotate(4deg);
   }
+}
+
+.animated-button {
+  transform: scale(1);
+  transition-duration: 0.2s;
+  transition-property: transform;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* FORM ELEMENTS */
+.add-to-cart-button {
+  padding: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--light-blue-grey);
+  color: var(--dark-grey);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--dark-blue-grey);
+  }
+}
+
+.select-label {
+  font-size: var(--small-font-size);
+}
+
+.select {
+  margin-left: 0.5em;
+  padding: 0.2em;
+  border: 1px solid var(--light-grey);
+  border-radius: 5px;
+  color: var(--dark-grey);
+}
+
+.like-button {
+  align-self: flex-end;
+  width: 45px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.like-button-image {
+  width: 30px;
 }
