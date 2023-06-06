@@ -33,7 +33,10 @@ productsRouter.post('/categories/:categoryId', async (request, response, next) =
         [sort.field]: sort.direction
       }
     }
-    const products = await Product.findByCategory(request.params.categoryId, limit, page, sort)
+    const materialIds = request.body.materialIds
+    const colorsIds = request.body.colorsIds
+    const productTypes = request.body.productTypes
+    const products = await Product.findByCategory(request.params.categoryId, limit, page, sort, materialIds, colorsIds, productTypes)
     response.json(products)
   } catch(exception) {
     next(exception)
@@ -77,19 +80,6 @@ productsRouter.post('/search', async (request, response, next) => {
     const searchResults = await Product.search(searchTerm, limit, page)
     response.json(searchResults)
   } catch(exception) {
-    next(exception)
-  }
-})
-
-productsRouter.post('/filter/:categoryId', async (request, response, next) => {
-  try { 
-    const categoryId = request.params.categoryId
-    const materialIds = request.body.materialIds
-    const colorsIds = request.body.colorsIds
-    const productTypes = request.body.productTypes
-    const filteredProducts = await Product.filter(categoryId, materialIds, colorsIds, productTypes)
-    response.json(filteredProducts)
-  } catch (exception) {
     next(exception)
   }
 })

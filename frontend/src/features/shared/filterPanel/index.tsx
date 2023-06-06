@@ -18,12 +18,22 @@ import {
 import Checkbox from './components/checkbox'
 import ColorButton from './components/colorButton'
 
-const FilterPanel:React.FC = ():JSX.Element => {
+interface FilterPanelProps {
+}
+
+const FilterPanel:React.FC<FilterPanelProps> = ():JSX.Element => {
   const dispatch = useAppDispatch()
   const [ isOpen, setIsOpen ] = useState(false)
   const materials = useAppSelector(state => state.filterPanelSlice.materials)
   const colors = useAppSelector(state => state.filterPanelSlice.colors)
   const productTypes = useAppSelector(state => state.filterPanelSlice.productTypes)
+  /** 
+   * 1. remove this and have a local state keep track of selected
+   * 2. in applyFitlers, set the selected filters in redux state
+   * 3. add the selected ids to the dependency array in the productList component
+   * 4. think about storing the data on the front end differently. Ideally, we would want access
+   *    to the names of the applied filters to show which ones are applied
+   */
   const selectedMaterialIds = useAppSelector(state => state.filterPanelSlice.selectedMaterialIds)
   const selectedColorIds = useAppSelector(state => state.filterPanelSlice.selectedColorIds)
   const selectedProductTypes = useAppSelector(state => state.filterPanelSlice.selectedProductTypes)
@@ -35,7 +45,6 @@ const FilterPanel:React.FC = ():JSX.Element => {
   }, [])
 
   const toggledMaterialSelection = (materialId: string) => {
-    console.log('clicked!', materialId)
     if (selectedMaterialIds.indexOf(materialId) > -1) {
       dispatch(removeMaterial(materialId))
     } else {
@@ -103,7 +112,6 @@ const FilterPanel:React.FC = ():JSX.Element => {
   }
 
   const productTypesPane = () => {
-    console.log('productTypes', selectedProductTypes)
     return (
       <section className='filter-pane'>
         <h5>Product Type</h5>
@@ -129,9 +137,9 @@ const FilterPanel:React.FC = ():JSX.Element => {
   const memoizedProductTypesPane = useMemo(() => productTypesPane(), [ productTypes, selectedProductTypes ])
 
   const applyFilters = () => {
-    // api call to get filtered data goes here!
     setIsOpen(false)
   }
+
   return (
     <div className='filter-panel'>
       <button className='filter-button animated-button' onClick={() => setIsOpen(!isOpen)}>

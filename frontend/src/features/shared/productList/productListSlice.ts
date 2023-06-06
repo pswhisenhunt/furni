@@ -32,12 +32,27 @@ export const fetchSearchResults = createAsyncThunk('products/searchResults', asy
   return await post(SEARCH_PRODUCTS_URL, { searchTerm: searchTerm })
 })
 
-export const fetchProductsForCategory = createAsyncThunk('products/fetchByCategory', async ({ category, limit, page, sortBy }: { category: Category, limit: number, page: number, sortBy: { field: string, direction: number}}) => {
-  return await post(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${category.id}`, { limit: limit, page: page, sort: sortBy })
-})
-
-export const fetchFilteredProducts = createAsyncThunk('products/fetchFiltered', async ({ categoryId, materialIds, colorIds, productTypes }: { categoryId: string, materialIds: string[], colorIds: string[], productTypes: string[]}) => {
-  return await post(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${categoryId}`, {
+export const fetchProductsForCategory = createAsyncThunk('products/fetchByCategory', async ({ 
+    category,
+    limit,
+    page,
+    sortBy,
+    materialIds,
+    colorIds,
+    productTypes
+  }: { 
+    category: Category,
+    limit: number,
+    page: number,
+    sortBy: { field: string, direction: number },
+    materialIds: string[],
+    colorIds: string[],
+    productTypes: string[]
+  }) => {
+  return await post(`${FETCH_PRODUCTS_BY_CATEGORY_URL}/${category.id}`, { 
+    limit: limit,
+    page: page,
+    sortBy: sortBy,
     materialIds: materialIds,
     colorIds: colorIds,
     productTypes: productTypes

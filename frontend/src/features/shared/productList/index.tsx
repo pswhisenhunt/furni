@@ -21,6 +21,12 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
   const sortBy = useAppSelector(state => state.productListSlice.sortBy)
   const page = useAppSelector(state => state.productListSlice.page)
   const status = useAppSelector(state => state.productListSlice.status)
+
+  /** Product Filters  */
+  const selectedMaterialIds = useAppSelector(state => state.filterPanelSlice.selectedMaterialIds)
+  const selectedColorIds = useAppSelector(state => state.filterPanelSlice.selectedColorIds)
+  const selectedProductTypes = useAppSelector(state => state.filterPanelSlice.selectedProductTypes)
+
   const memoizedFilterPanel = useMemo(() => <FilterPanel/>, [])
 
   const handleSelectViewPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,9 +48,13 @@ const ProductList: React.FC<ProductListProps> = ({ title }): JSX.Element => {
       limit: limit,
       page: page,
       sortBy: sortBy,
+      materialIds: selectedMaterialIds,
+      colorIds: selectedColorIds,
+      productTypes: selectedProductTypes
     }))
   }, [ page, limit, category, sortBy ])
 
+  console.log(products)
   return (
     <div className='product-list'>
       <div className='product-list-header'>

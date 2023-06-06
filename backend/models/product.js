@@ -94,21 +94,36 @@ module.exports = {
     return products ? products.map((p) => normalizeProduct(p)) : null
   },
 
-  findByCategory: async (categoryId, limit = 24, page, sort) => {
-    const query = { categories: { $in: [categoryId] } }
+  findByCategory: async (categoryId, limit = 24, page, sort, materialIds, colorIds, types) => {
+    const query = { categories: { $in: [ new mongoose.Types.ObjectId(categoryId)] } }
+    if (materialIds?.length > 0) {
+      materialIds = materialIds.map(id => new mongoose.Types.ObjectId(id))
+      query.materials = { $in: materialIds }
+    }
+    if (colorIds?.length > 0) {
+      colorIds = colorIds.map(id => new mongoose.Types.ObjectId(id))
+      query.colors = { $in: colorIds }
+    }
+    if (types?.length > 0) {
+      query.type = { $in: types }
+    }
     const count = await Product.find(query).count()
     let products
     if (sort) {
       products = await Product.find(query)
-        .select('description price images averageRating')
+        .select('description price images averageRating type')
         .populate({ path: 'categories', select: 'name'})
+        .populate({ path: 'materials', select: 'name'})
+        .populate({ path: 'colors', select: 'name'})
         .sort(sort)
         .limit(limit)
         .skip(limit * page)
     } else {
       products = await Product.find(query)
-        .select('description price images averageRating')
+        .select('description price images averageRating type')
         .populate({ path: 'categories', select: 'name'})
+        .populate({ path: 'materials', select: 'name'})
+        .populate({ path: 'colors', select: 'name'})
         .limit(limit)
         .skip(limit * page)
     }  
@@ -136,18 +151,6 @@ module.exports = {
       products: matchingProducts ? matchingProducts.map(p => normalizeProduct(p)) : null
     }
   },
-
-  // filter: async (categoryId, materialIds, colorIds, productTypes) => {
-  //   const filteredProducts = await Product.find()
-  //     .select('description price images averageRating')
-  //     .populate({ path: 'categories', select: 'name'})
-  //   const count = await Product.find().count()
-    
-  //   return {
-  //     count: count,
-  //     products: filteredProducts ? filteredProducts.map(p => normalizeProduct(p)) : null
-  //   }
-  // },
 
   delete: async (id) => {
     return await Product.findByIdAndRemove(id)
