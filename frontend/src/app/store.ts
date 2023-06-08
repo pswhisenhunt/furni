@@ -6,6 +6,7 @@ import productSlice from "../features/shared/productPage/productSlice"
 import navBarSlice from "../features/shared/navBar/navBarSlice"
 import searchBoxSlice from "../features/shared/searchBox/searchBoxSlice"
 import filterPanelSlice from "../features/shared/filterPanel/filterPanelSlice"
+import userSlice from "../features/user/userSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     productSlice,
     navBarSlice,
     searchBoxSlice,
-    filterPanelSlice
+    filterPanelSlice,
+    userSlice
   }
 })

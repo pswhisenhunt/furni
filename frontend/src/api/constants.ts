@@ -1,5 +1,6 @@
 export const BASE_IMAGE_URL = 'http://localhost:3001/images'
 export const BASE_API_URL = 'http://localhost:3001/api'
+export const BASE_URL = 'http://localhost:3001'
 
 /** Categry Endpoint */
 export const CATEGORIES_URL = `${BASE_API_URL}/categories`
@@ -16,3 +17,6 @@ export const FETCH_MATERIALS_URL = `${BASE_API_URL}/materials`
 
 /** Color Endpoints */
 export const FETCH_COLORS_URL = `${BASE_API_URL}/colors`
+
+/** User Enspoints */
+export const USER_LOGIN = `${BASE_URL}/login`

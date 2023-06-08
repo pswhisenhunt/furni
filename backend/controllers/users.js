@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const getTokenFrom = require('../utils/getTokenFrom')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
@@ -11,16 +13,24 @@ usersRouter.get('/', async (request, response, next) => {
   }
 })
 
-usersRouter.get('/:id', async (request, resposne, next) => {
+usersRouter.get('/:id', async (request, response, next) => {
   try {
-    const user = await User.find(request.params.id)
-    resposne.json(user)
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(request.params.id)
+    response.json(user)
   } catch(exception) {
     next(exception)
   }
 })
 
 usersRouter.delete('/:id', (request, response, next) => {
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
   User.delete(request.params.id)
     .then(() => {
       response.status(204).end()
@@ -30,6 +40,10 @@ usersRouter.delete('/:id', (request, response, next) => {
 
 usersRouter.put('/:id', async (request, response, next) => {
   try {
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
     const updatedUser = await User.update(request.params.id, request.body)
     if (updatedUser) {
       response.json(updatedUser)

@@ -9,8 +9,15 @@ export const get = async (url: string) => {
   }
 }
 
-export const post = async (url: string, data: object = {}) => {
+export const post = async (url: string, data: object = {}, token?: string) => {
   try {
+    if (token) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+      const response = await axios.post(url, data, config)
+      return response.data
+    }
     const response = await axios.post(url, data)
     return response.data
   } catch (exception) {

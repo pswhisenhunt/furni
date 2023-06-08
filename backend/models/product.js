@@ -109,7 +109,7 @@ module.exports = {
     }
     const count = await Product.find(query).count()
     let products
-    console.log(sort)
+
     if (sort) {
       products = await Product.find(query)
         .select('description price images averageRating type')

@@ -15,11 +15,11 @@ const userSchema = new mongoose.Schema({
   },
   orders: [{ 
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'orderSchema'
+    ref: 'Order'
   }],
   favorites: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'productSchema'
+    ref: 'Product'
   }],
   email: {
     type: String,
@@ -72,12 +72,16 @@ const normalizeUser = (user) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    street_name: user.streetName,
-    street_number: user.streetNumber,
-    unit_number: user.unitNumber,
+    streetName: user.streetName,
+    streetNumber: user.streetNumber,
+    unitNumber: user.unitNumber,
     city: user.city,
     state: user.state,
-    zipcode: user.zipcode 
+    zipcode: user.zipcode,
+    orders: user.orders,
+    favorites: user.favorites,
+    passwordHash: user.passwordHash,
+    role: user.role
   }
 }
 
@@ -86,10 +90,18 @@ const User = mongoose.model('User', userSchema)
 module.exports = {
   get: async () => {
     const users = await User.find({})
-    return users.map(u => normalizeUser(u))
+    return users ? users.map(u => normalizeUser(u)) : null
   },
-  find: async (id) => {
+  findById: async (id) => {
     const user = await User.findById(id)
+      .populate({ path: 'orders'})
+      .populate({ path: 'favorites', select: 'name images'})
+    return user ? normalizeUser(user) : null
+  },
+  findBy: async (attribute, value) => {
+    const user = await User.findOne({ [attribute]: value })
+      .populate({ path: 'orders'})
+      .populate({ path: 'favorites', select: 'name images'})
     return user ? normalizeUser(user) : null
   },
   save: async (data) => {
@@ -109,6 +121,8 @@ module.exports = {
       favorites: data.favorites || []
     })
     const savedUser = await user.save()
+      .populate({ path: 'orders'})
+      .populate({ path: 'favorites', select: 'name images'})
     return savedUser ? normalizeUser(savedUser) : null
   },
   update: async (id,data) => {
@@ -127,6 +141,8 @@ module.exports = {
       favorites: data.favorites || []
     }
     const updatedUser = await User.findByIdAndUpdate(id, newData, { new: true, content: 'query'})
+      .populate({ path: 'orders'})
+      .populate({ path: 'favorites', select: 'name images'})
     return updatedUser ? normalizeUser(updatedUser) : null
   },
   deleteAll: async () => {
